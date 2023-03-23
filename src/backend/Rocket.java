@@ -6,7 +6,7 @@ import rendering.Renderer;
 import utils.Vector2;
 
 public class Rocket extends Entity {
-    final static float imageScale = 2;
+    final static float imageScale = 0.1f;
     private float fuelRemaining;
     private BufferedImage sprite;
 

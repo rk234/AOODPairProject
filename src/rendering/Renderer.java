@@ -1,5 +1,6 @@
 package rendering;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -23,12 +24,26 @@ public class Renderer {
     }
 
     public void drawImage(Vector2 pos, Vector2 imgSize, float rotation, BufferedImage img) {
-        AffineTransform transform = new AffineTransform();
-        transform.translate(-cam.getPosition().getX(), cam.getPosition().getY());
-        transform.scale(cam.getZoom(), cam.getZoom());
+        AffineTransform transform = createTransform();
+        transform.rotate(Math.toRadians(rotation), pos.getX(), -pos.getY());
+        g2d.setTransform(transform);
+        g2d.drawImage(img, (int) (pos.getX() - (imgSize.getX() / 2)), (int) (-pos.getY() - (imgSize.getY() / 2)), (int) imgSize.getX(), (int) imgSize.getY(), null);
+    }
+
+    /*
+    public void drawCircle(Vector2 pos, float radius, float rotation, Color color) {
+        AffineTransform transform = createTransform();
         transform.rotate(Math.toRadians(rotation), pos.getX(), pos.getY());
         g2d.setTransform(transform);
-        
-        g2d.drawImage(img, (int) pos.getX(), (int) pos.getY(), (int) imgSize.getX(), (int) imgSize.getY(), null);
+        g2d.setColor(color);
+        g2d.fillOval((int)(pos.getX()-radius), (int)(pos.getY()-radius), (int)radius*2, (int) radius*2);
+    }
+    */
+
+    public AffineTransform createTransform() {
+        AffineTransform transform = new AffineTransform();
+        transform.translate((panelWidth)-cam.getPosition().getX(), (panelHeight)+cam.getPosition().getY());
+        transform.scale(cam.getZoom(), cam.getZoom());
+        return transform;
     }
 }

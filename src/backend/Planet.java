@@ -1,5 +1,6 @@
 package backend;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import rendering.Renderer;
 import utils.Vector2;
@@ -15,6 +16,6 @@ public class Planet extends Entity {
     }
 
     public void draw(Renderer renderer) {
-        renderer.drawImage(getPosition(), new Vector2(radius*2, radius*2), 0, image);
+        renderer.drawImage(getPosition(), new Vector2(radius*2, radius*2), getRotation(), image);
     }
 }
