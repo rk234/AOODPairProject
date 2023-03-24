@@ -42,6 +42,7 @@ public class Vector2 {
     }
 
     public Vector2 normalize() {
+        //returns unit vector
         return new Vector2(x/magnitude(), y/magnitude());
     }
 

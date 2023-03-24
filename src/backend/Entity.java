@@ -47,8 +47,15 @@ public abstract class Entity {
     public float getRotation() {
         return rotation;
     }
-    public void addForce(Vector2 force) {
-        acceleration = acceleration.add(force.scale(1/mass));
+    public void setNetForce(Vector2 force) {
+        acceleration = force.scale(1/mass);
     }
+
+    public void calculatePhysics(float dt) {
+        velocity = velocity.add(acceleration.scale(dt));
+        position = position.add(velocity.scale(dt));
+    }
+
+    public abstract void update(float dt, Entity[] entities);
     public abstract void draw(Renderer renderer);
 }

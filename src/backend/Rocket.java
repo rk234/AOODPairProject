@@ -10,6 +10,8 @@ public class Rocket extends Entity {
     private float fuelRemaining;
     private BufferedImage sprite;
 
+    private final float GRAVITATIONAL_CONSTANT = 1;
+
     public Rocket(Vector2 position, float fuelRemaining, BufferedImage sprite) {
         super(position, new Vector2(), new Vector2(), 0.001f, 0);
         this.fuelRemaining = fuelRemaining;
@@ -27,4 +29,18 @@ public class Rocket extends Entity {
         renderer.drawImage(getPosition(), new Vector2(sprite.getWidth(), sprite.getHeight()).scale(imageScale), getRotation(), sprite);
     }
     
+    public void update(float dt, Entity[] entities) {
+        Vector2 netForce = new Vector2();
+        for(Entity e : entities) {
+            netForce = netForce.add(Fg(e));
+        }
+        setNetForce(netForce);
+        System.out.println(getVelocity().magnitude());
+    }
+
+    public Vector2 Fg(Entity e) {
+        Vector2 distance =  e.getPosition().subtract(getPosition());
+        Vector2 planetDir = distance.normalize();
+        return planetDir.scale(getMass() * e.getMass() / distance.magnitude());
+    }
 }

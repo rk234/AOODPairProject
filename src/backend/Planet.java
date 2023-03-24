@@ -8,6 +8,7 @@ import utils.Vector2;
 public class Planet extends Entity {
     private float radius;
     private BufferedImage image;
+    private boolean statitonary = true;
 
     public Planet(Vector2 position, float mass, float radius, BufferedImage image) {
         super(position, new Vector2(), new Vector2(), mass, 0);
@@ -16,6 +17,11 @@ public class Planet extends Entity {
     }
 
     public void draw(Renderer renderer) {
-        renderer.drawImage(getPosition(), new Vector2(radius*2, radius*2), getRotation(), image);
+        renderer.drawImage(getPosition(), new Vector2(radius*2, radius*2).scale(1.25f), getRotation(), image);
+        //renderer.debugDrawOval(getPosition(), new Vector2(radius*2, radius*2));
+    }
+
+    public void update(float dt, Entity[] entities) {
+        //blank for now, only stationary planets
     }
 }

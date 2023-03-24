@@ -30,6 +30,18 @@ public class Renderer {
         g2d.drawImage(img, (int) (pos.getX() - (imgSize.getX() / 2)), (int) (-pos.getY() - (imgSize.getY() / 2)), (int) imgSize.getX(), (int) imgSize.getY(), null);
     }
 
+    public void debugDrawOval(Vector2 pos, Vector2 size) {
+        g2d.setTransform(createTransform());
+        g2d.setColor(Color.RED);
+        g2d.drawOval((int) (pos.getX() - (size.getX() / 2)), (int) (-pos.getY() - (size.getY() / 2)), (int) size.getX(), (int) size.getY());
+    }
+
+    public void debugDrawLine(Vector2 p1, Vector2 p2, Color c) {
+        g2d.setTransform(createTransform());
+        g2d.setColor(c);
+        g2d.drawLine((int)p1.getX(), (int)-p1.getY(), (int)p2.getX(), (int)-p2.getY());
+    }
+
     /*
     public void drawCircle(Vector2 pos, float radius, float rotation, Color color) {
         AffineTransform transform = createTransform();
@@ -42,7 +54,7 @@ public class Renderer {
 
     public AffineTransform createTransform() {
         AffineTransform transform = new AffineTransform();
-        transform.translate((panelWidth)-cam.getPosition().getX(), (panelHeight)+cam.getPosition().getY());
+        transform.translate((panelWidth)-(cam.getPosition().getX()*cam.getZoom()), (panelHeight)+(cam.getPosition().getY()*cam.getZoom()));
         transform.scale(cam.getZoom(), cam.getZoom());
         return transform;
     }
