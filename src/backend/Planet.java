@@ -1,6 +1,5 @@
 package backend;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import rendering.Renderer;
 import utils.Vector2;
@@ -23,5 +22,13 @@ public class Planet extends Entity {
 
     public void update(float dt, Entity[] entities) {
         //blank for now, only stationary planets
+    }
+
+    public float getRadius() {
+        return radius;
+    }
+
+    public void setRadius(float radius) {
+        this.radius = radius;
     }
 }

@@ -2,7 +2,7 @@ package backend;
 import utils.Vector2;
 import rendering.Renderer;
 
-public abstract class Entity {
+public abstract class Entity extends Collideable {
     private Vector2 position;
     private Vector2 velocity;
     private Vector2 acceleration;
@@ -55,6 +55,12 @@ public abstract class Entity {
         velocity = velocity.add(acceleration.scale(dt));
         position = position.add(velocity.scale(dt));
     }
+
+    public Vector2 direction() {
+        float angle = (float) Math.toRadians(90-getRotation());
+        return new Vector2((float)Math.cos(angle), (float)Math.sin(angle));
+    }
+
 
     public abstract void update(float dt, Entity[] entities);
     public abstract void draw(Renderer renderer);

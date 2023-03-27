@@ -9,8 +9,10 @@ import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 
 import backend.Level;
+import backend.Planet;
 import rendering.Camera;
 import rendering.Renderer;
+import utils.InputHandler;
 import utils.Vector2;
 import backend.Entity;
 import javax.swing.Timer;
@@ -18,12 +20,16 @@ import javax.swing.Timer;
 public class GameView extends JPanel {
     private Level level;
     private Camera cam;
+    private float PHYSICS_STEP = 1/15f;
 
     public GameView(Level level) {
         this.level = level;
-        cam = new Camera(level.getRocket().getPosition(), 2f);
+        cam = new Camera(level.getRocket().getPosition(), 1f);
         setPreferredSize(new Dimension(800,800));
         startLevel();
+        setFocusable(true);
+        requestFocus();
+        addKeyListener(InputHandler.main);
     }
 
     public void startLevel() {
@@ -41,12 +47,12 @@ public class GameView extends JPanel {
                 }
 
                 level.getRocket().update(dt/1000f, level.getEntities());
-                level.getRocket().calculatePhysics(dt/1000f);
+                level.getRocket().calculatePhysics(PHYSICS_STEP);
 
                 //rotate the rocket according to velocity
-                float angle = (float) Math.toDegrees(Math.atan(level.getRocket().getVelocity().getY()/level.getRocket().getVelocity().getX()));
+                /*float angle = (float) Math.toDegrees(Math.atan(level.getRocket().getVelocity().getY()/level.getRocket().getVelocity().getX()));
                 if((level.getRocket().getVelocity().getX() < 0)) angle = 180+angle;
-                level.getRocket().setRotation(90-angle);
+                level.getRocket().setRotation(90-angle);*/
                 
                 cam.setPosition(level.getRocket().getPosition());
 
@@ -72,7 +78,12 @@ public class GameView extends JPanel {
             e.draw(r);
         }
         level.getRocket().draw(r);
-        r.debugDrawLine(level.getRocket().getPosition(), level.getRocket().getPosition().add(level.getRocket().getAcceleration().scale(10)), Color.RED);
-        r.debugDrawLine(level.getRocket().getPosition(), level.getRocket().getPosition().add(level.getRocket().getVelocity().scale(10)), Color.BLUE);
+
+        r.debugDrawLine(level.getRocket().getPosition(), level.getRocket().getPosition().add(level.getRocket().direction().scale(100)), Color.green);
+
+        Vector2[] fcst = level.getRocket().forecast(PHYSICS_STEP, 500, level.getEntities());
+        for(int i = 0; i < fcst.length-1; i++) {
+            r.debugDrawLine(fcst[i], fcst[i+1], Color.GRAY);
+        }
     }
 }

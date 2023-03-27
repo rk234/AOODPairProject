@@ -14,6 +14,11 @@ public class Vector2 {
         this.y = 0;
     }
 
+    public Vector2(float a) {
+        this.x = a;
+        this.y = a;
+    }
+
     public Vector2 add(Vector2 other) {
         return new Vector2(other.getX() + x, other.getY() + y);
     }
@@ -21,6 +26,10 @@ public class Vector2 {
 
     public Vector2 subtract(Vector2 other) {
         return new Vector2(x - other.getX(), y - other.getY());
+    }
+
+    public static float distance(Vector2 a, Vector2 b) {
+        return b.subtract(a).magnitude();
     }
 
 
@@ -57,5 +66,9 @@ public class Vector2 {
     }
     public void setY(float y) {
         this.y = y;
+    }
+
+    public String toString() {
+        return "Vec2(" + x + ", " + y + ")";
     }
 }
