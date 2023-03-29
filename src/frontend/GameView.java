@@ -1,10 +1,13 @@
 package frontend;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.geom.AffineTransform;
 
 import javax.swing.JPanel;
 
@@ -18,9 +21,12 @@ import backend.Entity;
 import javax.swing.Timer;
 
 public class GameView extends JPanel {
+    //TODO: maybe implement a fastforward boolean for gameview
     private Level level;
     private Camera cam;
     private float PHYSICS_STEP = 1/15f;
+
+    private int FPS = 0;
 
     public GameView(Level level) {
         this.level = level;
@@ -49,20 +55,27 @@ public class GameView extends JPanel {
                 level.getRocket().update(dt/1000f, level.getEntities());
                 level.getRocket().calculatePhysics(PHYSICS_STEP);
 
-                //rotate the rocket according to velocity
-                /*float angle = (float) Math.toDegrees(Math.atan(level.getRocket().getVelocity().getY()/level.getRocket().getVelocity().getX()));
-                if((level.getRocket().getVelocity().getX() < 0)) angle = 180+angle;
-                level.getRocket().setRotation(90-angle);*/
-                
+                if(InputHandler.main.isKeyPressed(KeyEvent.VK_SHIFT)) {
+                    cam.setZoom(cam.getZoom()*(1-dt/1000f));
+                }
+                if(InputHandler.main.isKeyPressed(KeyEvent.VK_ENTER)) {
+                    cam.setZoom(cam.getZoom()*(1+dt/1000f));
+                }
+
+                if(level.getObjective().isFailed()) {
+                    System.out.println("Obj Failed");
+                } else {
+                    if(level.getObjective().checkCompleted(level.getRocket())) {
+                        //Complete level
+                        System.out.println("Level completed");
+                    }
+                }
+
                 cam.setPosition(level.getRocket().getPosition());
 
                 elapsedTime+=dt;
                 lastTime = System.currentTimeMillis();
-
-                if(elapsedTime > 1000) {
-                    System.out.println("FPS: " + (1000/dt));
-                    elapsedTime = 0;
-                }
+                FPS = (int) (1000/dt);
             }
         });
         loopTimer.start();
@@ -74,16 +87,27 @@ public class GameView extends JPanel {
         g2d.setBackground(Color.BLACK);
         Renderer r = new Renderer(cam, getWidth(), getHeight(), g2d);
         r.clear();
+
+        drawForecast(r);
+
         for(Entity e : level.getEntities()) {
             e.draw(r);
         }
         level.getRocket().draw(r);
 
-        r.debugDrawLine(level.getRocket().getPosition(), level.getRocket().getPosition().add(level.getRocket().direction().scale(100)), Color.green);
+        r.drawLine(level.getRocket().getPosition(), level.getRocket().getPosition().add(level.getRocket().direction().scale(100)), Color.green);
 
-        Vector2[] fcst = level.getRocket().forecast(PHYSICS_STEP, 500, level.getEntities());
+        g2d.setTransform(new AffineTransform());
+        g2d.setColor(Color.WHITE);
+        g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 30));
+        g2d.drawString("FPS: " + FPS, 8, 40);
+    }
+
+    public void drawForecast(Renderer r) {
+        Vector2[] fcst = level.getRocket().forecast(PHYSICS_STEP, 1000, level.getEntities());
+        r.drawLine(level.getRocket().getPosition(), fcst[0], Color.GRAY);
         for(int i = 0; i < fcst.length-1; i++) {
-            r.debugDrawLine(fcst[i], fcst[i+1], Color.GRAY);
+            r.drawLine(fcst[i], fcst[i+1], Color.GRAY);
         }
     }
 }

@@ -7,10 +7,10 @@ import utils.Vector2;
 public class Planet extends Entity {
     private float radius;
     private BufferedImage image;
-    private boolean statitonary = true;
+    private boolean stationary = true;
 
     public Planet(Vector2 position, float mass, float radius, BufferedImage image) {
-        super(position, new Vector2(), new Vector2(), mass, 0);
+        super(position, new Vector2(), new Vector2(), mass, 0, new CircleBounds(position, radius));
         this.radius = radius;
         this.image = image;
     }

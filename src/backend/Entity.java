@@ -8,8 +8,10 @@ public abstract class Entity extends Collideable {
     private Vector2 acceleration;
     private float mass;
     private float rotation;
+    private Level level;
    
-    public Entity(Vector2 position, Vector2 velocity, Vector2 acceleration, float mass, float rotation) {
+    public Entity(Vector2 position, Vector2 velocity, Vector2 acceleration, float mass, float rotation, BoundingShape bounds) {
+        super(bounds);
         this.position = position;
         this.velocity = velocity;
         this.acceleration = acceleration;
@@ -54,6 +56,7 @@ public abstract class Entity extends Collideable {
     public void calculatePhysics(float dt) {
         velocity = velocity.add(acceleration.scale(dt));
         position = position.add(velocity.scale(dt));
+        afterPhysics(dt);
     }
 
     public Vector2 direction() {
@@ -61,7 +64,14 @@ public abstract class Entity extends Collideable {
         return new Vector2((float)Math.cos(angle), (float)Math.sin(angle));
     }
 
+    public void setLevel(Level l) {
+        level = l;
+    }
+    public Level getLevel() {
+        return level;
+    }
 
     public abstract void update(float dt, Entity[] entities);
     public abstract void draw(Renderer renderer);
+    public void afterPhysics(float dt) {};
 }

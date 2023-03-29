@@ -3,10 +3,17 @@ package backend;
 public class Level {
     private Rocket rocket;
     private Entity[] entities;
+    private Objective objective;
 
-    public Level(Rocket rocket, Entity[] entities) {
+    public Level(Rocket rocket, Entity[] entities, Objective objective) {
         this.rocket = rocket;
         this.entities = entities;
+        this.objective = objective;
+
+        for(Entity e : entities) {
+            e.setLevel(this);
+        }
+        rocket.setLevel(this);
     }
     
     public Rocket getRocket() {
@@ -20,5 +27,9 @@ public class Level {
     }
     public void setEntities(Entity[] entities) {
         this.entities = entities;
+    }
+
+    public Objective getObjective() {
+        return objective;
     }
 }
