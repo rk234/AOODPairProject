@@ -1,6 +1,8 @@
 package backend;
 
 import java.awt.image.BufferedImage;
+import java.util.Vector;
+
 import rendering.Renderer;
 import utils.Vector2;
 
@@ -17,7 +19,15 @@ public class Planet extends Entity {
 
     public void draw(Renderer renderer) {
         renderer.drawImage(getPosition(), new Vector2(radius*2, radius*2).scale(1.25f), getRotation(), image);
-        //renderer.debugDrawOval(getPosition(), new Vector2(radius*2, radius*2));
+        renderer.drawOval(getPosition(), new Vector2(calculateInfluenceRadius()*2, calculateInfluenceRadius()*2));
+    }
+
+    public boolean inInfluence(Vector2 pos) {
+        return Vector2.distance(pos, getPosition()) < calculateInfluenceRadius();
+    }
+
+    private float calculateInfluenceRadius() {
+        return radius*8;
     }
 
     public void update(float dt, Entity[] entities) {

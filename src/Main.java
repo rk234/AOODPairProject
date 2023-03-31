@@ -4,12 +4,14 @@ import javax.swing.JFrame;
 
 import backend.Entity;
 import backend.Level;
+import backend.OrbitObjective;
 import backend.Planet;
 import backend.Rocket;
 import backend.LandObjective;
 import frontend.GameView;
 import utils.TextureManager;
 import utils.Vector2;
+import backend.AltitudeObjective;
 
 public class Main {
     public static void main(String[] args) {
@@ -21,7 +23,7 @@ public class Main {
         //rocket.setVelocity(new Vector2((float)Math.sqrt(20*test.getMass()/300),0));
         JFrame frame = new JFrame();
 
-        frame.setContentPane(new GameView(new Level(rocket, new Entity[] {test, moon}, new LandObjective(moon))));
+        frame.setContentPane(new GameView(new Level(rocket, new Entity[] {test, moon}, new OrbitObjective(test, 100))));
         
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();

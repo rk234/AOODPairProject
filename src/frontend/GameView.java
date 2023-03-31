@@ -25,6 +25,7 @@ public class GameView extends JPanel {
     private Level level;
     private Camera cam;
     private float PHYSICS_STEP = 1/15f;
+    private final int FORRECAST_STEPS = 10000;
 
     private int FPS = 0;
 
@@ -101,13 +102,33 @@ public class GameView extends JPanel {
         g2d.setColor(Color.WHITE);
         g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 30));
         g2d.drawString("FPS: " + FPS, 8, 40);
+        g2d.drawString("Velocity: " + level.getRocket().getVelocity().magnitude(), 8, 80);
+        //g2d.drawString("Altitude " + level.getRocket().altitude(null), 8, 80);
+
+        drawUI(g2d);
+    }
+
+    public void drawUI(Graphics2D g) {
+        g.setTransform(AffineTransform.getTranslateInstance(2, 2));
+        g.setColor(Color.blue);
+        g.fillRect(0,  (getHeight()*2)-200, 50, getHeight()*2);
+        g.setColor(Color.white);
+        g.drawRect(0, 0, 50, 50);
+        g.drawRect(0, 800, 50, 50);
+        g.drawRect(800, 0, 50, 50);
+        g.drawRect(getHeight(), getHeight(), 50, 50);
     }
 
     public void drawForecast(Renderer r) {
-        Vector2[] fcst = level.getRocket().forecast(PHYSICS_STEP, 1000, level.getEntities());
-        r.drawLine(level.getRocket().getPosition(), fcst[0], Color.GRAY);
+        Vector2[] fcst = level.getRocket().forecast(PHYSICS_STEP, FORRECAST_STEPS, level.getEntities());
+        Color c = Color.GRAY;
+
+        if(fcst[FORRECAST_STEPS-1] == null) c = Color.RED;
+        
+        r.drawLine(level.getRocket().getPosition(), fcst[0], c);
         for(int i = 0; i < fcst.length-1; i++) {
-            r.drawLine(fcst[i], fcst[i+1], Color.GRAY);
+            if(fcst[i] != null && fcst[i+1] != null)
+                r.drawLine(fcst[i], fcst[i+1], c);
         }
     }
 }
