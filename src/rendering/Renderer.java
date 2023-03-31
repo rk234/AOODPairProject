@@ -69,7 +69,7 @@ public class Renderer {
 
     public AffineTransform createTransform() {
         AffineTransform transform = new AffineTransform();
-        transform.translate((panelWidth)-(cam.getPosition().getX()*cam.getZoom()), (panelHeight)+(cam.getPosition().getY()*cam.getZoom()));
+        transform.translate((panelWidth/2f)-(cam.getPosition().getX()*cam.getZoom()), (panelHeight/2f)+(cam.getPosition().getY()*cam.getZoom()));
         transform.scale(cam.getZoom(), cam.getZoom());
         return transform;
     }

@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
@@ -26,8 +27,10 @@ public class GameView extends JPanel {
     private Camera cam;
     private float PHYSICS_STEP = 1/15f;
     private final int FORRECAST_STEPS = 10000;
-
     private int FPS = 0;
+
+    private BufferedImage framebuffer;
+    private int prevHeight, prevWidth;
 
     public GameView(Level level) {
         this.level = level;
@@ -84,9 +87,15 @@ public class GameView extends JPanel {
 
 
     public void paintComponent(Graphics g) {
-        Graphics2D g2d = (Graphics2D) g;
+        if(prevWidth != getWidth() || prevHeight != getHeight())
+            framebuffer = createFramebuffer(getWidth()*2, getHeight()*2);
+        prevHeight = getHeight();
+        prevWidth = getWidth();
+
+        Graphics2D g2d = (Graphics2D) framebuffer.getGraphics();
         g2d.setBackground(Color.BLACK);
-        Renderer r = new Renderer(cam, getWidth(), getHeight(), g2d);
+
+        Renderer r = new Renderer(cam, getWidth()*2, getHeight()*2, g2d);
         r.clear();
 
         drawForecast(r);
@@ -97,26 +106,19 @@ public class GameView extends JPanel {
         level.getRocket().draw(r);
 
         r.drawLine(level.getRocket().getPosition(), level.getRocket().getPosition().add(level.getRocket().direction().scale(100)), Color.green);
-
-        g2d.setTransform(new AffineTransform());
-        g2d.setColor(Color.WHITE);
-        g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 30));
-        g2d.drawString("FPS: " + FPS, 8, 40);
-        g2d.drawString("Velocity: " + level.getRocket().getVelocity().magnitude(), 8, 80);
-        //g2d.drawString("Altitude " + level.getRocket().altitude(null), 8, 80);
-
         drawUI(g2d);
+        
+        g.drawImage(framebuffer, 0, 0,getWidth(), getHeight(), null);
     }
 
     public void drawUI(Graphics2D g) {
-        g.setTransform(AffineTransform.getTranslateInstance(2, 2));
+        g.setTransform(new AffineTransform());
+        g.setColor(Color.WHITE);
+        g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 30));
+        g.drawString("FPS: " + FPS, 8, 40);
+        g.drawString("Velocity: " + level.getRocket().getVelocity().magnitude(), 8, 80);
         g.setColor(Color.blue);
         g.fillRect(0,  (getHeight()*2)-200, 50, getHeight()*2);
-        g.setColor(Color.white);
-        g.drawRect(0, 0, 50, 50);
-        g.drawRect(0, 800, 50, 50);
-        g.drawRect(800, 0, 50, 50);
-        g.drawRect(getHeight(), getHeight(), 50, 50);
     }
 
     public void drawForecast(Renderer r) {
@@ -130,5 +132,9 @@ public class GameView extends JPanel {
             if(fcst[i] != null && fcst[i+1] != null)
                 r.drawLine(fcst[i], fcst[i+1], c);
         }
+    }
+
+    public BufferedImage createFramebuffer(int width, int height) {
+        return new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     }
 }
