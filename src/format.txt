@@ -1,0 +1,23 @@
+Formatting:
+# of planets
+Planets
+Objective
+    Planet will be referred to by its index in planet list
+Rocket
+
+/*
+
+Planet test = new Planet(new Vector2(), 1000000, 500, planetImg);
+Planet moon = new Planet(new Vector2(0,-10000), 500000, 400, TextureManager.main.getTexture("planet1"));
+Rocket rocket = new Rocket(new Vector2(0, 500+10), 10, TextureManager.main.getTexture("rocket"));
+//rocket.setVelocity(new Vector2((float)Math.sqrt(20*test.getMass()/300),0));
+*/
+
+Type of Object, Image, Position (x,y), Mass, Radius
+2
+Planet planet0 0 0 1000000 500
+Planet planet1 0 -10000 500000 400
+
+OrbitObjective 1 100
+
+Rocket 0 510 10 // Fuel

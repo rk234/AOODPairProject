@@ -20,7 +20,7 @@ public class Rocket extends Entity {
 
     private float elapsedTime = 0;
     private final float ROTATION_SPEED = 50;
-    private final float FUEL_COEFFICIENT = 5;
+    private final float FUEL_COEFFICIENT = 0.05f;
     private final float ACCELERATION = 2500;
     private final float MAX_LANDING_VEL = 75;
     private final float MAX_LANDING_THRESHOLD = 0.85f;
@@ -72,8 +72,13 @@ public class Rocket extends Entity {
             landed = false;
         }
 
+        if(fuelRemaining <= 0) {
+            getLevel().getObjective().setFailed(true);
+        }
+
         if(InputHandler.main.isKeyPressed(KeyEvent.VK_SPACE)) {
             Vector2 accelerationForce = direction().scale(ACCELERATION*getMass()*dt);
+            fuelRemaining-=(float) (getInitialFuel()/(FUEL_COEFFICIENT*ACCELERATION));
             force = force.add(accelerationForce);
             minimumOrbitPoint = null;
         }
@@ -87,7 +92,7 @@ public class Rocket extends Entity {
 
     public void onCollision(Entity collidingWith, Objective objective) {
         if(getVelocity().magnitude() > MAX_LANDING_VEL) {
-            // Restart level
+            objective.setFailed(true);
             System.out.println("velocity too big");
         } else {
             if(getPosition().subtract(collidingWith.getPosition()).normalize().dot(direction()) > MAX_LANDING_THRESHOLD) {

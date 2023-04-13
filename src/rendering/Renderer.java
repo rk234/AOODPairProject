@@ -1,7 +1,9 @@
 package rendering;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import utils.Vector2;
@@ -30,10 +32,12 @@ public class Renderer {
         g2d.drawImage(img, (int) (pos.getX() - (imgSize.getX() / 2)), (int) (-pos.getY() - (imgSize.getY() / 2)), (int) imgSize.getX(), (int) imgSize.getY(), null);
     }
 
-    public void drawOval(Vector2 pos, Vector2 size) {
+    public void drawOval(Vector2 pos, Vector2 size, Color c, Stroke stroke) {
         g2d.setTransform(createTransform());
-        g2d.setColor(Color.RED);
+        g2d.setColor(c);
+        g2d.setStroke(stroke);
         g2d.drawOval((int) (pos.getX() - (size.getX() / 2)), (int) (-pos.getY() - (size.getY() / 2)), (int) size.getX(), (int) size.getY());
+        g2d.setStroke(new BasicStroke());
     }
 
     public void drawLine(Vector2 p1, Vector2 p2, Color c) {

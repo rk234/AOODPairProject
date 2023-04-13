@@ -25,4 +25,10 @@ public class OrbitObjective extends Objective {
             return false;
         }
     }
+    public Planet getTargetPlanet() {
+        return p;
+    }
+    public float getMinimumAltitude() {
+        return minimumAltitude;
+    }
 }
