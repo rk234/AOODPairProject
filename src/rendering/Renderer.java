@@ -40,6 +40,11 @@ public class Renderer {
         g2d.setStroke(new BasicStroke());
     }
 
+    public void drawTriangle(Vector2 pos, Vector2 size, float rotation, Color color) {
+        AffineTransform transform = createTransform();
+        transform.rotate(Math.toRadians(rotation), pos.getX(), -pos.getY());  
+    }
+
     public void drawLine(Vector2 p1, Vector2 p2, Color c) {
         g2d.setTransform(createTransform());
         g2d.setColor(c);

@@ -73,7 +73,7 @@ public class Rocket extends Entity {
         }
 
         if(fuelRemaining <= 0) {
-            getLevel().getObjective().setFailed(true);
+            getLevel().getObjective().setFailed(true, "You Ran Out of Fuel!");
         }
 
         if(InputHandler.main.isKeyPressed(KeyEvent.VK_SPACE)) {
@@ -86,20 +86,22 @@ public class Rocket extends Entity {
         
         setNetForce(force);
     }
+
+
     public void addForce(Vector2 force) {
         setAcceleration(getAcceleration().add(force.scale(1/getMass())));
     }
 
     public void onCollision(Entity collidingWith, Objective objective) {
         if(getVelocity().magnitude() > MAX_LANDING_VEL) {
-            objective.setFailed(true);
+            objective.setFailed(true, "You Crashed!");
             System.out.println("velocity too big");
         } else {
             if(getPosition().subtract(collidingWith.getPosition()).normalize().dot(direction()) > MAX_LANDING_THRESHOLD) {
                 landed = true;
             } else {
                 //bad landing
-                objective.setFailed(true);
+                objective.setFailed(true, "Bad Landing!");
             }
         }
     }
@@ -149,7 +151,7 @@ public class Rocket extends Entity {
 
             if(startingPlanet != null) {
                 //altitude
-                float altitude = altitude(startingPlanet);
+                float altitude = Vector2.distance(startingPlanet.getPosition(), p)-startingPlanet.getRadius();
                 if(minimumOrbitPoint == null) {
                     minimumOrbitPoint = p;
                     minimumOrbitPointVel = v;
@@ -157,12 +159,22 @@ public class Rocket extends Entity {
                     minimumOrbitPoint = p;
                     minimumOrbitPointVel = v;
                 }
+
+                if(!startingPlanet.inInfluence(p)) {
+                    minimumOrbitPoint=null;
+                    minimumOrbitPointVel=null;
+                }
             }
-            
+
+           
+
             if(!pointInPlanet(p, entities))
                 futurePos[i] = new Vector2(p.getX(), p.getY());
-            else
+            else {
+                minimumOrbitPoint = null;
+                minimumOrbitPointVel = null;
                 break;
+            }
         }
 
         return futurePos;

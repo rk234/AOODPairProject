@@ -1,8 +1,8 @@
-False
+True
 2
-Planet planet0 0 0 1000000 500
-Planet planet1 0 -10000 500000 400
+Planet Earth planet0 0 0 1000000 500
+Planet Moon planet1 0 -10000 500000 400
 
 OrbitObjective 1 100
 
-Rocket 0 510 10
+Rocket 0 520 10

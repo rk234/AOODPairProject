@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 
 import frontend.GameView;
-import frontend.GameView;
 import frontend.LevelSelectView;
 import frontend.MenuView;
 import utils.InputHandler;
@@ -26,7 +25,15 @@ public class Main {
         window.pack();
         window.setVisible(true);
     }
-
+    public static void windowRepaint() {
+        window.repaint();
+        window.revalidate();
+        //window.setSize(window.getWidth(), window.getHeight() + 1);
+        //window.setSize(window.getWidth(), window.getHeight() - 1);
+    }
+    public static void requestFocus() {
+        window.requestFocus();
+    }
     public static void changeView(String view, Object... data) {
         switch(view) {
             case "MenuView":
@@ -40,6 +47,6 @@ public class Main {
             break;
         }
         window.requestFocus();
-        window.pack();
+        window.revalidate();
     }
 }

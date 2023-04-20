@@ -1,5 +1,4 @@
 package backend;
-import utils.Vector2;
 
 public class AltitudeObjective extends Objective {
     private Planet p;
@@ -15,5 +14,13 @@ public class AltitudeObjective extends Objective {
         } else {
             return false;
         }
+    }
+
+    public float altitude() {
+        return altitude;
+    }
+
+    public Planet getPlanet() {
+        return p;
     }
 }

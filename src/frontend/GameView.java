@@ -15,7 +15,9 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 
+import frontend.HeaderPanel;
 import backend.Main;
 import backend.Level;
 import backend.LevelManager;
@@ -27,54 +29,81 @@ import utils.InputHandler;
 import utils.Vector2;
 import backend.Entity;
 import javax.swing.Timer;
+import javax.swing.JFrame;
 
 public class GameView extends JPanel {
     //TODO: maybe implement a fastforward boolean for gameview
+    //TODO: manage rocket visibility when very zoomed out
     private Level level;
     private Camera cam;
     private float PHYSICS_STEP = 1/15f;
     private final int FORRECAST_STEPS = 10000;
     private int FPS = 0;
+    private int timeScale = 1;
 
     private BufferedImage framebuffer;
     private int prevHeight, prevWidth;
 
+    private EndPanel panel;
+    private HeaderPanel header;
+
     public GameView(Level level) {
+        setDoubleBuffered(true);
         this.level = level;
         cam = new Camera(level.getRocket().getPosition(), 1f);
         setPreferredSize(new Dimension(800,800));
-        //setLayout(null);
+        setLayout(null);
         startLevel();
         setFocusable(true);
         requestFocus();
         setBackground(new Color(0,0,0,0));
         setOpaque(false);
+
+        header = new HeaderPanel(level.getObjective(), new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JRadioButton button = (JRadioButton)(e.getSource());
+                int ind = 0;
+                String modText = "";
+                while (button.getText().charAt(ind) != 'x') {
+                    modText += button.getText().charAt(ind);
+                    ind++;
+                }
+                timeScale = Integer.parseInt(modText);
+                Main.requestFocus();
+            }
+        });
+        add(header);
+
         //addKeyListener(InputHandler.main);
     }
 
     public boolean isOptimizedDrawingEnabled() {
-        return false;
+        return true;
     }
 
     public void startLevel() {
-
-
         Timer loopTimer = new Timer(1000/30, null);
         loopTimer.addActionListener(new ActionListener() {
             private long lastTime = System.currentTimeMillis();
             private long elapsedTime = 0;
             @Override
             public void actionPerformed(ActionEvent event) {
-                repaint();
+                repaint();                
+                header.setFps(FPS);
+                header.setVelocity(level.getRocket().getVelocity().magnitude());
+                //header.altitude(level.getRocket().altitude(null));
                 long dt = System.currentTimeMillis()-lastTime;
 
                 for(Entity e : level.getEntities()) {
-                    e.update(dt/1000f, level.getEntities());
-                    e.calculatePhysics(dt/1000f);
+                    for(int i = 0; i < timeScale; i++) {
+                        e.update(dt/1000f, level.getEntities());
+                        e.calculatePhysics(PHYSICS_STEP);
+                    }
                 }
-
-                level.getRocket().update(dt/1000f, level.getEntities());
-                level.getRocket().calculatePhysics(PHYSICS_STEP);
+                for(int i = 0; i < timeScale; i++) {
+                    level.getRocket().update(dt/1000f, level.getEntities());
+                    level.getRocket().calculatePhysics(PHYSICS_STEP);
+                }
 
                 if(InputHandler.main.isKeyPressed(KeyEvent.VK_SHIFT)) {
                     cam.setZoom(cam.getZoom()*(1-dt/1000f));
@@ -85,12 +114,17 @@ public class GameView extends JPanel {
 
                 if(level.getObjective().isFailed()) {
                     System.out.println("Obj Failed");
-                    loopTimer.stop();
                     showLevelFailPanel();
+                    loopTimer.stop();
                 } else {
                     if(level.getObjective().checkCompleted(level.getRocket())) {
-                        //Complete level
-                        System.out.println("Level completed");
+                        try {
+                            LevelManager.setComplete(level.getID(), true);
+                        } catch (Exception ex) {
+                        
+                        }
+                        showLevelCompletePanel();
+                        loopTimer.stop();
                     }
                 }
 
@@ -106,10 +140,15 @@ public class GameView extends JPanel {
 
 
     public void paintComponent(Graphics g) {
+        header.setBounds(0, 0, getWidth(), 50);
         if(prevWidth != getWidth() || prevHeight != getHeight())
             framebuffer = createFramebuffer(getWidth()*2, getHeight()*2);
         prevHeight = getHeight();
         prevWidth = getWidth();
+
+        if(panel != null) {
+            panel.setBounds(getWidth()/4, getHeight()/4, getWidth()/2, getHeight()/2);
+        }
 
         Graphics2D g2d = (Graphics2D) framebuffer.getGraphics();
         g2d.setBackground(Color.BLACK);
@@ -127,36 +166,58 @@ public class GameView extends JPanel {
         for(Entity e : level.getEntities()) {
             e.draw(r);
         }
-        level.getRocket().draw(r);
+        float zoom = cam.getZoom();
+        if (zoom > 0.5) {
+            level.getRocket().draw(r);
+        } else {
+            r.drawTriangle(level.getRocket().getPosition(), new Vector2(zoom), level.getRocket().getRotation(), Color.RED);
+        }
 
         r.drawLine(level.getRocket().getPosition(), level.getRocket().getPosition().add(level.getRocket().direction().scale(100)), Color.green);
         drawUI(g2d);
         
         g.drawImage(framebuffer, 0, 0,getWidth(), getHeight(), null);
-        super.paintComponents(g);
     }
 
     public void drawUI(Graphics2D g) {
         g.setTransform(new AffineTransform());
         g.setColor(Color.WHITE);
+        /*
         g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 30));
         g.drawString("FPS: " + FPS, 8, 40);
         g.drawString("Velocity: " + level.getRocket().getVelocity().magnitude(), 8, 80);
+        */
+        drawFuelBar(g);
+    }
+
+    public void drawFuelBar(Graphics2D g) {
+        int height = 400;
+        int width = 90;
 
         g.setColor(Color.blue);
-        g.fillRect(0,  (getHeight()*2)-300, 70, getHeight()*2);
+        g.fillRect(0,  (getHeight()*2)-height, width, getHeight()*2);
         g.setColor(Color.red);
-        int padding = 5;
+        int padding = 10;
         float fuelRatio = level.getRocket().getFuel()/level.getRocket().getInitialFuel();
-        int fuelBoxY = (int) ((getHeight()*2)-((300-padding)*fuelRatio));
-        g.fillRect(10,  fuelBoxY, 50, getHeight()*2);
+        int fuelBoxY = (int) ((getHeight()*2)-((height-padding)*fuelRatio));
+        g.fillRect(padding,  fuelBoxY, width-(padding*2), getHeight()*2);
     }
 
     public void showLevelFailPanel() {
-        FailPanel panel = new FailPanel();
+        System.out.println("showing fail");
+        panel = new EndPanel(level,true);
         panel.setBounds(getWidth()/4, getHeight()/4, getWidth()/2, getHeight()/2);
         add(panel);
-        repaint();
+        panel.invalidate();
+        Main.windowRepaint();
+    }
+    public void showLevelCompletePanel() {
+        System.out.println("showing win");
+        panel = new EndPanel(level,false);
+        panel.setBounds(getWidth()/4, getHeight()/4, getWidth()/2, getHeight()/2);
+        add(panel);
+        panel.invalidate();
+        Main.windowRepaint();
     }
 
     public void drawForecast(Renderer r) {
@@ -176,32 +237,12 @@ public class GameView extends JPanel {
         return new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     }
     
-    public static class FailPanel extends JPanel {
-        public FailPanel() {
-            setPreferredSize(new Dimension(getWidth() / 2, getHeight() / 2));
-            setBackground(new Color(255, 255, 255, 255));
-            setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-            JButton continueButton = new JButton("Continue");
-            continueButton.setAlignmentX(CENTER_ALIGNMENT);
-            JButton levelButton = new JButton("Level Select");
-            levelButton.setAlignmentX(CENTER_ALIGNMENT);
-
-            JLabel msgLabel = new JLabel("Level Failed");
-            msgLabel.setAlignmentX(CENTER_ALIGNMENT);
-
-            this.add(msgLabel);
-            this.add(continueButton);
-            this.add(levelButton);
-        }
-    }
-    class continueButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            Main.changeView("GameView", LevelManager.getLevel(level.getID()));
-        }
-    }
-    class levelButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            Main.changeView("LevelSelectView");
-        }
-    }
+    // public static void main(String[] args) {
+    //     JFrame temp = new JFrame();
+    //     JPanel panel = new JPanel();
+    //     panel.add(new FailPanel(null));
+    //     temp.add(panel);
+    //     temp.setVisible(true);
+    //     temp.pack();
+    // }
 }

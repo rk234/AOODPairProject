@@ -22,6 +22,7 @@ public class LevelManager {
             for(int i = 0; i < numEntities; i++) {
                 String objectType = sc.next();
                 if(objectType.equals("Planet")) {
+                    String name = sc.next();
                     String texture = sc.next();
                     float x = sc.nextFloat();
                     float y = sc.nextFloat();
@@ -29,6 +30,7 @@ public class LevelManager {
                     float radius = sc.nextFloat();
 
                     Planet p = new Planet(new Vector2(x,y), mass, radius, TextureManager.main.getTexture(texture));
+                    p.setName(name);
                     entities[i] = p;
                 }
             }

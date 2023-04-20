@@ -15,4 +15,8 @@ public class LandObjective extends Objective {
             return false;
         }
     }
+
+    public Planet getPlanet() {
+        return p;
+    }
 }

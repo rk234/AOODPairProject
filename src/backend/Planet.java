@@ -12,7 +12,8 @@ public class Planet extends Entity {
     private float radius;
     private BufferedImage image;
     private boolean stationary = true;
-
+    private float elapsedTime = 0;
+    private String name = "";
     public Planet(Vector2 position, float mass, float radius, BufferedImage image) {
         super(position, new Vector2(), new Vector2(), mass, 0, new CircleBounds(position, radius));
         this.radius = radius;
@@ -28,8 +29,8 @@ public class Planet extends Entity {
         return Vector2.distance(pos, getPosition()) < calculateInfluenceRadius();
     }
 
-    private float calculateInfluenceRadius() {
-        return radius*8;
+    public float calculateInfluenceRadius() {
+        return radius*9;
     }
 
     public void update(float dt, Entity[] entities) {
@@ -42,5 +43,12 @@ public class Planet extends Entity {
 
     public void setRadius(float radius) {
         this.radius = radius;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 }
