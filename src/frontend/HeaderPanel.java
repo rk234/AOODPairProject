@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -28,9 +29,11 @@ public class HeaderPanel extends JPanel{
     private ActionListener fastForwardListener;
     private JPanel row1;
     private JPanel row2;
+    private Objective obj;
 
     public HeaderPanel(Objective objective, ActionListener fastForwardListener) {
         this.fastForwardListener = fastForwardListener;
+        this.obj = objective;
         setLayout(new GridLayout(0, 1, 0, 8));
         setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
         
@@ -66,8 +69,8 @@ public class HeaderPanel extends JPanel{
         row2.setLayout(new BoxLayout(row2, BoxLayout.X_AXIS));
         row2.add(new JLabel("Time scale: "));
         ButtonGroup group = new ButtonGroup();
-        for (int i = 0; i < 4; i++) {
-            int[] mods = {1,3,5,10};
+        for (int i = 0; i < 5; i++) {
+            int[] mods = {1,3,5,10,50};
             String text = (mods[i]) + "x";
             JRadioButton btn = new JRadioButton(text);
             btn.setSelected(i == 0);
@@ -83,10 +86,18 @@ public class HeaderPanel extends JPanel{
         fpsLbl.setText("FPS: " + fps);
     }
     public void setVelocity(float velocity) {
-        velocityLbl.setText("Velocity: " + velocity);
+        velocityLbl.setText("Velocity: " + String.format("%.1f", velocity));
+        if(obj instanceof LandObjective) {
+            if(velocity > 75) {
+                velocityLbl.setForeground(Color.RED);
+                velocityLbl.setText(velocityLbl.getText() + " (Unsafe for landing!)");
+            } else {
+                velocityLbl.setForeground(new Color(0,128,0));
+            }
+        }
     }
     public void setAltitude(float altitude) {
-        altitudeLbl.setText("Altitude: " + altitude);
+        altitudeLbl.setText("Altitude: " + String.format("%.1f", altitude));
     }
 
     public void setFastForwardListener(ActionListener listener) {

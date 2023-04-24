@@ -50,7 +50,7 @@ public class GameView extends JPanel {
     public GameView(Level level) {
         setDoubleBuffered(true);
         this.level = level;
-        cam = new Camera(level.getRocket().getPosition(), 1f);
+        cam = new Camera(level.getRocket().getPosition(), 3f);
         setPreferredSize(new Dimension(800,800));
         setLayout(null);
         startLevel();
@@ -89,8 +89,9 @@ public class GameView extends JPanel {
             @Override
             public void actionPerformed(ActionEvent event) {
                 repaint();                
-                header.setFps(FPS);
+                //header.setFps(FPS);
                 header.setVelocity(level.getRocket().getVelocity().magnitude());
+                Planet currentPlanet = null;
                 //header.altitude(level.getRocket().altitude(null));
                 long dt = System.currentTimeMillis()-lastTime;
 
@@ -99,7 +100,14 @@ public class GameView extends JPanel {
                         e.update(dt/1000f, level.getEntities());
                         e.calculatePhysics(PHYSICS_STEP);
                     }
+
+                    if(e instanceof Planet) {
+                        if(((Planet) e).inInfluence(level.getRocket().getPosition()))
+                            currentPlanet = (Planet) e;
+                    }
                 }
+
+                if(currentPlanet != null) header.setAltitude(level.getRocket().altitude(currentPlanet));
                 for(int i = 0; i < timeScale; i++) {
                     level.getRocket().update(dt/1000f, level.getEntities());
                     level.getRocket().calculatePhysics(PHYSICS_STEP);
@@ -147,7 +155,7 @@ public class GameView extends JPanel {
         prevWidth = getWidth();
 
         if(panel != null) {
-            panel.setBounds(getWidth()/4, getHeight()/4, getWidth()/2, getHeight()/2);
+            panel.setBounds(getWidth()/4, getHeight()/6, getWidth()/2, getHeight()/4);
         }
 
         Graphics2D g2d = (Graphics2D) framebuffer.getGraphics();
@@ -167,13 +175,13 @@ public class GameView extends JPanel {
             e.draw(r);
         }
         float zoom = cam.getZoom();
-        if (zoom > 0.5) {
+        if (zoom > 1) {
             level.getRocket().draw(r);
         } else {
-            r.drawTriangle(level.getRocket().getPosition(), new Vector2(zoom), level.getRocket().getRotation(), Color.RED);
+            r.drawTriangle(level.getRocket().getPosition(), new Vector2((1/zoom)*30), level.getRocket().getRotation(), Color.RED);
         }
 
-        r.drawLine(level.getRocket().getPosition(), level.getRocket().getPosition().add(level.getRocket().direction().scale(100)), Color.green);
+        //r.drawLine(level.getRocket().getPosition(), level.getRocket().getPosition().add(level.getRocket().direction().scale(100)), Color.green);
         drawUI(g2d);
         
         g.drawImage(framebuffer, 0, 0,getWidth(), getHeight(), null);
@@ -206,7 +214,7 @@ public class GameView extends JPanel {
     public void showLevelFailPanel() {
         System.out.println("showing fail");
         panel = new EndPanel(level,true);
-        panel.setBounds(getWidth()/4, getHeight()/4, getWidth()/2, getHeight()/2);
+        panel.setBounds(getWidth()/4, getHeight()/6, getWidth()/2, getHeight()/4);
         add(panel);
         panel.invalidate();
         Main.windowRepaint();
@@ -214,7 +222,7 @@ public class GameView extends JPanel {
     public void showLevelCompletePanel() {
         System.out.println("showing win");
         panel = new EndPanel(level,false);
-        panel.setBounds(getWidth()/4, getHeight()/4, getWidth()/2, getHeight()/2);
+        panel.setBounds(getWidth()/4, getHeight()/6, getWidth()/2, getHeight()/4);
         add(panel);
         panel.invalidate();
         Main.windowRepaint();

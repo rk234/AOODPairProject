@@ -45,7 +45,7 @@ public class Rocket extends Entity {
     public void draw(Renderer renderer) {
         renderer.drawImage(getPosition(), size(), getRotation(), sprite);
         //renderer.drawRect(getPosition(), ((RectangleBounds) getBoundingShape()).getSize(), Color.RED);
-        getBoundingShape().draw(renderer);
+        //getBoundingShape().draw(renderer);
     }
 
     public Vector2 size() {

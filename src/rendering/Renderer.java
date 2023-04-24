@@ -42,7 +42,15 @@ public class Renderer {
 
     public void drawTriangle(Vector2 pos, Vector2 size, float rotation, Color color) {
         AffineTransform transform = createTransform();
-        transform.rotate(Math.toRadians(rotation), pos.getX(), -pos.getY());  
+        transform.rotate(Math.toRadians(rotation), pos.getX(), -pos.getY());
+        g2d.setTransform(transform);
+        g2d.setColor(color);
+        int[] x = new int[] {(int) pos.getX(), (int) (pos.getX()-size.getX()/3), (int) (pos.getX()+size.getX()/3)};
+        int[] y = new int[] {(int) (pos.getY()+size.getY()/2), (int) (pos.getY()-size.getY()/2), (int) (pos.getY()-size.getY()/2)};
+        for (int i = 0; i < 3; i++) {
+            y[i] = -y[i];
+        }
+        g2d.fillPolygon(x, y, 3);
     }
 
     public void drawLine(Vector2 p1, Vector2 p2, Color c) {
