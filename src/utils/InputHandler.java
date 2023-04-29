@@ -23,4 +23,10 @@ public class InputHandler implements KeyListener {
     public boolean isKeyPressed(int keyCode) {
         return keys[keyCode];
     }
+
+    public void reset() {
+        for(int i = 0; i < keys.length; i++) {
+            keys[i] = false;
+        }
+    }
 }

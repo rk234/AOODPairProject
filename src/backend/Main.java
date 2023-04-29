@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 
 import frontend.GameView;
 import frontend.LevelSelectView;
+import frontend.TutorialView;
 import frontend.MenuView;
 import utils.InputHandler;
 import utils.TextureManager;
@@ -12,9 +13,7 @@ import utils.TextureManager;
 public class Main {
     private static JFrame window;
 
-    public static void main(String[] args) {
-        BufferedImage planetImg = TextureManager.main.getTexture("planet0");
-       
+    public static void main(String[] args) {       
         window = new JFrame();
 
         //window.setContentPane(new GameView(LevelManager.getLevel(0)));
@@ -35,6 +34,7 @@ public class Main {
         window.requestFocus();
     }
     public static void changeView(String view, Object... data) {
+        InputHandler.main.reset();
         switch(view) {
             case "MenuView":
                 window.setContentPane(new MenuView());
@@ -44,6 +44,9 @@ public class Main {
             break;
             case "GameView":
                 window.setContentPane(new GameView((Level) data[0]));
+            break;
+            case "TutorialView":
+                window.setContentPane(new TutorialView());
             break;
         }
         window.requestFocus();

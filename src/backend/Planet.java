@@ -30,7 +30,7 @@ public class Planet extends Entity {
     }
 
     public float calculateInfluenceRadius() {
-        return radius*9;
+        return radius*12;
     }
 
     public void update(float dt, Entity[] entities) {

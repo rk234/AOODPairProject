@@ -2,6 +2,7 @@ package frontend;
 
 import backend.AltitudeObjective;
 import backend.LandObjective;
+import backend.Main;
 import backend.Objective;
 import backend.OrbitObjective;
 
@@ -12,6 +13,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JButton;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -79,6 +81,16 @@ public class HeaderPanel extends JPanel{
             group.add(btn);
         }
 
+        row2.add(Box.createHorizontalGlue());
+        JButton endLevel = new JButton("Level Select");
+        endLevel.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Main.changeView("LevelSelectView");
+            }
+        });
+
+        row2.add(endLevel);
+
         add(row1);
         add(row2);
     }
@@ -98,6 +110,9 @@ public class HeaderPanel extends JPanel{
     }
     public void setAltitude(float altitude) {
         altitudeLbl.setText("Altitude: " + String.format("%.1f", altitude));
+    }
+    public void setAltitudeText(String text) {
+        altitudeLbl.setText(text);
     }
 
     public void setFastForwardListener(ActionListener listener) {

@@ -73,10 +73,11 @@ public class Rocket extends Entity {
         }
 
         if(fuelRemaining <= 0) {
-            getLevel().getObjective().setFailed(true, "You Ran Out of Fuel!");
+            if(altitude(currentPlanet(entities)) > 200)
+                getLevel().getObjective().setFailed(true, "You Ran Out of Fuel!");
         }
 
-        if(InputHandler.main.isKeyPressed(KeyEvent.VK_SPACE)) {
+        if(InputHandler.main.isKeyPressed(KeyEvent.VK_SPACE) && fuelRemaining > 0) {
             Vector2 accelerationForce = direction().scale(ACCELERATION*getMass()*dt);
             fuelRemaining-=(float) (getInitialFuel()/(FUEL_COEFFICIENT*ACCELERATION));
             force = force.add(accelerationForce);
@@ -88,6 +89,16 @@ public class Rocket extends Entity {
     }
 
 
+    private Planet currentPlanet(Entity[] entities) {
+        for(Entity e : entities) {
+            if(e instanceof Planet) {
+                Planet p = (Planet) e;
+                if(p.inInfluence(getPosition())) return p;
+            }
+        }
+
+        return null;
+    }
     public void addForce(Vector2 force) {
         setAcceleration(getAcceleration().add(force.scale(1/getMass())));
     }
@@ -166,8 +177,6 @@ public class Rocket extends Entity {
                 }
             }
 
-           
-
             if(!pointInPlanet(p, entities))
                 futurePos[i] = new Vector2(p.getX(), p.getY());
             else {
@@ -199,6 +208,7 @@ public class Rocket extends Entity {
     }
 
     public float altitude(Planet p) {
+        if(p == null) return Float.MAX_VALUE;
         return Vector2.distance(getPosition(), p.getPosition())-p.getRadius();
     } 
 

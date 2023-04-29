@@ -1,4 +1,6 @@
 package frontend;
+
+import java.util.HashSet;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -40,6 +42,7 @@ public class GameView extends JPanel {
     private final int FORRECAST_STEPS = 10000;
     private int FPS = 0;
     private int timeScale = 1;
+    private HashSet<String> planetsVisited;
 
     private BufferedImage framebuffer;
     private int prevHeight, prevWidth;
@@ -48,6 +51,7 @@ public class GameView extends JPanel {
     private HeaderPanel header;
 
     public GameView(Level level) {
+        planetsVisited = new HashSet<String>();
         setDoubleBuffered(true);
         this.level = level;
         cam = new Camera(level.getRocket().getPosition(), 3f);
@@ -82,6 +86,7 @@ public class GameView extends JPanel {
     }
 
     public void startLevel() {
+        cam.setZoom(level.getDefaultZoom());
         Timer loopTimer = new Timer(1000/30, null);
         loopTimer.addActionListener(new ActionListener() {
             private long lastTime = System.currentTimeMillis();
@@ -102,12 +107,18 @@ public class GameView extends JPanel {
                     }
 
                     if(e instanceof Planet) {
-                        if(((Planet) e).inInfluence(level.getRocket().getPosition()))
+                        if(((Planet) e).inInfluence(level.getRocket().getPosition())) {
                             currentPlanet = (Planet) e;
+                            planetsVisited.add(currentPlanet.getName());
+                        }
                     }
                 }
 
-                if(currentPlanet != null) header.setAltitude(level.getRocket().altitude(currentPlanet));
+                if (currentPlanet == null) {
+                    header.setAltitudeText("Altitude: N/A");
+                } else {
+                    header.setAltitude(level.getRocket().altitude(currentPlanet));
+                }
                 for(int i = 0; i < timeScale; i++) {
                     level.getRocket().update(dt/1000f, level.getEntities());
                     level.getRocket().calculatePhysics(PHYSICS_STEP);
@@ -125,14 +136,16 @@ public class GameView extends JPanel {
                     showLevelFailPanel();
                     loopTimer.stop();
                 } else {
-                    if(level.getObjective().checkCompleted(level.getRocket())) {
-                        try {
-                            LevelManager.setComplete(level.getID(), true);
-                        } catch (Exception ex) {
-                        
+                    if(planetsVisited.size() == level.getEntities().length) {
+                        if(level.getObjective().checkCompleted(level.getRocket())) {
+                            try {
+                                LevelManager.setComplete(level.getID(), true);
+                            } catch (Exception ex) {
+                            
+                            }
+                            showLevelCompletePanel();
+                            loopTimer.stop();
                         }
-                        showLevelCompletePanel();
-                        loopTimer.stop();
                     }
                 }
 
@@ -148,14 +161,14 @@ public class GameView extends JPanel {
 
 
     public void paintComponent(Graphics g) {
-        header.setBounds(0, 0, getWidth(), 50);
+        header.setBounds(0, 0, getWidth(), 60);
         if(prevWidth != getWidth() || prevHeight != getHeight())
             framebuffer = createFramebuffer(getWidth()*2, getHeight()*2);
         prevHeight = getHeight();
         prevWidth = getWidth();
 
         if(panel != null) {
-            panel.setBounds(getWidth()/4, getHeight()/6, getWidth()/2, getHeight()/4);
+            panel.setBounds(getWidth()/4, getHeight()/8, getWidth()/2, getHeight()/8);
         }
 
         Graphics2D g2d = (Graphics2D) framebuffer.getGraphics();
@@ -214,7 +227,7 @@ public class GameView extends JPanel {
     public void showLevelFailPanel() {
         System.out.println("showing fail");
         panel = new EndPanel(level,true);
-        panel.setBounds(getWidth()/4, getHeight()/6, getWidth()/2, getHeight()/4);
+        panel.setBounds(getWidth()/4, getHeight()/8, getWidth()/2, getHeight()/6);
         add(panel);
         panel.invalidate();
         Main.windowRepaint();
@@ -222,7 +235,7 @@ public class GameView extends JPanel {
     public void showLevelCompletePanel() {
         System.out.println("showing win");
         panel = new EndPanel(level,false);
-        panel.setBounds(getWidth()/4, getHeight()/6, getWidth()/2, getHeight()/4);
+        panel.setBounds(getWidth()/4, getHeight()/8, getWidth()/2, getHeight()/6);
         add(panel);
         panel.invalidate();
         Main.windowRepaint();

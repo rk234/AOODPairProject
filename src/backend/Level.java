@@ -6,13 +6,15 @@ public class Level {
     private Entity[] entities;
     private Objective objective;
     private boolean complete;
+    private float defaultZoom;
 
-    public Level(Rocket rocket, Entity[] entities, Objective objective, boolean complete, int id) {
+    public Level(Rocket rocket, Entity[] entities, Objective objective, boolean complete, int id, float zoom) {
         this.rocket = rocket;
         this.entities = entities;
         this.objective = objective;
         this.complete = complete;
         this.id = id;
+        defaultZoom = zoom;
 
         for(Entity e : entities) {
             e.setLevel(this);
@@ -66,5 +68,8 @@ public class Level {
 
     public void setID(int id) {
         this.id = id;
+    }
+    public float getDefaultZoom() {
+        return defaultZoom;
     }
 }

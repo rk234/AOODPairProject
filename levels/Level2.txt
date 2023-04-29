@@ -5,3 +5,5 @@ Planet Earth planet0 0 0 1000000 500
 OrbitObjective 0 500
 
 Rocket 0 510 5
+
+3

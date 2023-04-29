@@ -56,8 +56,9 @@ public class LevelManager {
                 float initialFuel = sc.nextFloat();
                 rocket = new Rocket(new Vector2(x, y), initialFuel, TextureManager.main.getTexture("rocket"));
             }
+            float zoom = sc.nextFloat();
 
-            return new Level(rocket, entities, objective, completed, level);
+            return new Level(rocket, entities, objective, completed, level, zoom);
         } catch(IOException ex) {
             return null;
         }

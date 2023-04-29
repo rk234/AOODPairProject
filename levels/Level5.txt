@@ -1,9 +1,11 @@
-True
+False
 3
 Planet Earth planet0 0 0 1000000 500
 Planet Purple planet9 0 -20000 500000 450
-Planet Mars planet8 -30000 -20000 300000 500
+Planet Mars planet8 -50000 -20000 300000 500
 
 OrbitObjective 2 500
 
 Rocket 0 520 175
+
+0.014

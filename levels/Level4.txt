@@ -1,8 +1,10 @@
-True
+False
 2
 Planet Earth planet0 0 0 1000000 500
-Planet Moon planet1 0 -10000 500000 400
+Planet Moon planet1 0 -12000 500000 400
 
 LandObjective 1
 
-Rocket 0 520 15
+Rocket 0 520 25
+
+3

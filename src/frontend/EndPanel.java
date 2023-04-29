@@ -28,7 +28,7 @@ public class EndPanel extends JPanel {
         setBackground(new Color(255, 255, 255, 255));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        JButton continueButton = new JButton("Continue");
+        JButton continueButton = new JButton("Restart Level");
         if (!failed) {
             continueButton.setText("Next Level");
         }
