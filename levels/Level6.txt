@@ -1,4 +1,4 @@
-True
+False
 3
 Planet Earth planet0 0 0 1000000 500
 Planet Purple planet9 0 -20000 500000 450

@@ -146,6 +146,7 @@ public class Rocket extends Entity {
         Vector2 p = new Vector2(getPosition().getX(), getPosition().getY());
         Vector2 v = new Vector2(getVelocity().getX(), getVelocity().getY());
         Planet startingPlanet = null;
+        boolean leftOrbit = false;
         for(Entity entity : entities) {
             if(entity instanceof Planet) {
                 Planet planet = (Planet) entity;
@@ -171,9 +172,10 @@ public class Rocket extends Entity {
                     minimumOrbitPointVel = v;
                 }
 
-                if(!startingPlanet.inInfluence(p)) {
+                if(!startingPlanet.inInfluence(p) || leftOrbit) {
                     minimumOrbitPoint=null;
                     minimumOrbitPointVel=null;
+                    leftOrbit = true;
                 }
             }
 

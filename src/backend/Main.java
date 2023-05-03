@@ -1,5 +1,6 @@
 package backend;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 
@@ -13,7 +14,7 @@ import utils.TextureManager;
 public class Main {
     private static JFrame window;
 
-    public static void main(String[] args) {       
+    public static void main(String[] args) {   
         window = new JFrame();
 
         //window.setContentPane(new GameView(LevelManager.getLevel(0)));

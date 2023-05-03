@@ -28,6 +28,7 @@ public class LevelSelectView extends JPanel implements ActionListener{
 
     private JButton forwardButton;
     private JButton backButton;
+    private JLabel subtitle;
 
     public LevelSelectView(Level[] levels) {
         this.levels = levels;
@@ -40,6 +41,10 @@ public class LevelSelectView extends JPanel implements ActionListener{
         title.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 50));
         title.setAlignmentX(CENTER_ALIGNMENT);
         add(title);
+
+        subtitle = new JLabel("Level Pack " + ((pageIndex/levelsPerPage)+1));
+        subtitle.setAlignmentX(CENTER_ALIGNMENT);
+        add(subtitle);
         add(Box.createRigidArea(new Dimension(0, 10)));
         
         JPanel navigation = new JPanel();
@@ -111,5 +116,7 @@ public class LevelSelectView extends JPanel implements ActionListener{
             int level = Integer.parseInt(text)-1;
             Main.changeView("GameView", LevelManager.getLevel(level));
         }
+
+        subtitle.setText("Level Pack " + ((pageIndex/levelsPerPage)+1));
     }
 }
