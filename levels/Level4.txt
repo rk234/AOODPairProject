@@ -1,4 +1,4 @@
-False
+True
 2
 Planet Earth planet0 0 0 1000000 500
 Planet Moon planet1 0 -12000 500000 400

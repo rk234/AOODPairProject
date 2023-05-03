@@ -22,7 +22,7 @@ public class LevelSelectView extends JPanel implements ActionListener{
     //private JButton[] levelButtons;
 
     private int pageIndex = 0;
-    private int levelsPerPage = 6;
+    private int levelsPerPage = 5;
     private Level[] levels;
     private JPanel levelBtns;
 

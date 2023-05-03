@@ -3,6 +3,9 @@ package frontend;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.JPanel;
+
+import backend.Main;
+
 import java.io.File;
 
 import java.awt.event.ActionEvent;
@@ -30,8 +33,12 @@ public class TutorialView extends JPanel implements ActionListener {
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
         menuButton = new JButton("Menu");
+        menuButton.addActionListener(this);
         leftButton = new JButton("Back");
-        rightButton = new JButton("Forward");
+        leftButton.addActionListener(this);
+        leftButton.setEnabled(false);
+        rightButton = new JButton("Next");
+        rightButton.addActionListener(this);
         buttonPanel.add(menuButton);
         buttonPanel.add(Box.createHorizontalGlue());
         buttonPanel.add(leftButton);
@@ -60,6 +67,11 @@ public class TutorialView extends JPanel implements ActionListener {
             int size = Math.min(getWidth(), getHeight());
             g.drawImage(img, (getWidth()-size)/2, (getHeight()-size)/2, size, size, null);
         }
+
+        public void setImage(BufferedImage img) {
+            this.img = img;
+            repaint();
+        }
     }
 
     @Override
@@ -67,13 +79,27 @@ public class TutorialView extends JPanel implements ActionListener {
         JButton btn = (JButton)e.getSource();
         String text = btn.getText();
         if (text.equals("Back")) {
-            currentSlide--;
-            if (currentSlide == 0) {
-                //TODO: finish this
-                //backButton.setEnabled(false);
+            if (currentSlide > 0) {
+                currentSlide--;
             }
-        } else if (text.equals("Foward")) {
-            currentSlide++;
+        } else if (text.equals("Next")) {
+            if (currentSlide < images.length-1) {
+                currentSlide++;
+            }
+        } else if (text.equals("Menu")) {
+            Main.changeView("MenuView");
         }
+
+        if (currentSlide == 0) {
+            leftButton.setEnabled(false);
+        } else {
+            leftButton.setEnabled(true);
+        }
+        if (currentSlide >= images.length-1) {
+            rightButton.setEnabled(false);
+        } else {
+            rightButton.setEnabled(true);
+        }
+        imagePanel.setImage(images[currentSlide]);
     }
 }

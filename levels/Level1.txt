@@ -2,7 +2,7 @@ True
 1
 Planet Earth planet0 0 0 1000000 500
 
-AltitudeObjective 0 750
+AltitudeObjective 0 2000
 
 Rocket 0 510 5
 

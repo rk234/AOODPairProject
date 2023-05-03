@@ -1,10 +1,11 @@
-True
-3
+False
+4
 Planet Earth planet0 0 0 1000000 500
 Planet Purple planet9 0 -20000 500000 450
 Planet Mars planet8 -50000 -20000 300000 500
+Planet Gray planet02 -50000 0 1000000 500
 
-OrbitObjective 2 500
+OrbitObjective 3 200
 
 Rocket 0 520 175
 
