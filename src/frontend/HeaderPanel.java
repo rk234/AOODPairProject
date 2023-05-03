@@ -28,13 +28,11 @@ public class HeaderPanel extends JPanel{
     private JLabel altitudeLbl;
     private JLabel objectiveLbl;
     
-    private ActionListener fastForwardListener;
     private JPanel row1;
     private JPanel row2;
     private Objective obj;
 
     public HeaderPanel(Objective objective, ActionListener fastForwardListener) {
-        this.fastForwardListener = fastForwardListener;
         this.obj = objective;
         setLayout(new GridLayout(0, 1, 0, 8));
         setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
@@ -113,9 +111,5 @@ public class HeaderPanel extends JPanel{
     }
     public void setAltitudeText(String text) {
         altitudeLbl.setText(text);
-    }
-
-    public void setFastForwardListener(ActionListener listener) {
-        this.fastForwardListener = listener;
     }
 }

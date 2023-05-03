@@ -1,15 +1,12 @@
 package backend;
 
-import java.awt.Color;
-import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.util.Vector;
 
 import rendering.Renderer;
+import utils.Constants;
 import utils.InputHandler;
 import utils.Vector2;
-import utils.Constants;
 
 public class Rocket extends Entity { 
     final static float imageScale = 0.1f;
@@ -18,7 +15,6 @@ public class Rocket extends Entity {
     private BufferedImage sprite;
     private boolean landed = true;
 
-    private float elapsedTime = 0;
     private final float ROTATION_SPEED = 50;
     private final float FUEL_COEFFICIENT = 0.05f;
     private final float ACCELERATION = 2500;
@@ -54,7 +50,6 @@ public class Rocket extends Entity {
     
     public void update(float dt, Entity[] entities) {
         //System.out.println(getVelocity().magnitude());
-        elapsedTime+=dt;
         Vector2 force = calcNetForce(entities, getPosition());
 
         if(InputHandler.main.isKeyPressed(KeyEvent.VK_RIGHT) && !landed) {

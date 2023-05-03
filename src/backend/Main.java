@@ -1,15 +1,11 @@
 package backend;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
 import javax.swing.JFrame;
 
 import frontend.GameView;
 import frontend.LevelSelectView;
-import frontend.TutorialView;
 import frontend.MenuView;
+import frontend.TutorialView;
 import utils.InputHandler;
-import utils.TextureManager;
 
 public class Main {
     private static JFrame window;

@@ -1,10 +1,8 @@
 package frontend;
 
-import java.util.HashSet;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -12,26 +10,22 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.util.HashSet;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.Timer;
 
-import frontend.HeaderPanel;
-import backend.Main;
+import backend.Entity;
 import backend.Level;
 import backend.LevelManager;
+import backend.Main;
 import backend.OrbitObjective;
 import backend.Planet;
 import rendering.Camera;
 import rendering.Renderer;
 import utils.InputHandler;
 import utils.Vector2;
-import backend.Entity;
-import javax.swing.Timer;
-import javax.swing.JFrame;
 
 public class GameView extends JPanel {
     //TODO: maybe implement a fastforward boolean for gameview
@@ -40,7 +34,6 @@ public class GameView extends JPanel {
     private Camera cam;
     private float PHYSICS_STEP = 1/15f;
     private final int FORRECAST_STEPS = 10000;
-    private int FPS = 0;
     private int timeScale = 1;
     private HashSet<String> planetsVisited;
 
@@ -90,7 +83,6 @@ public class GameView extends JPanel {
         Timer loopTimer = new Timer(1000/30, null);
         loopTimer.addActionListener(new ActionListener() {
             private long lastTime = System.currentTimeMillis();
-            private long elapsedTime = 0;
             @Override
             public void actionPerformed(ActionEvent event) {
                 repaint();                
@@ -150,10 +142,7 @@ public class GameView extends JPanel {
                 }
 
                 cam.setPosition(level.getRocket().getPosition());
-
-                elapsedTime+=dt;
                 lastTime = System.currentTimeMillis();
-                FPS = (int) (1000/dt);
             }
         });
         loopTimer.start();
