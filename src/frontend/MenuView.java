@@ -81,7 +81,6 @@ public class MenuView extends JPanel implements ActionListener {
     }
 
     public void paintComponent(Graphics g) {
-        long start = System.currentTimeMillis();
         for (int i = 0; i < particles.length; i++) {
             if(particles[i] == null) {
                 if(elapsedTime / 0.01f > 1) {

@@ -52,7 +52,7 @@ public class TutorialView extends JPanel implements ActionListener {
             try {
                 images[i] = ImageIO.read(new File("assets/tutorial/slide"+i+".png"));
             } catch (Exception ex) {
-                System.out.println("Couldn't load tutorial image");
+                System.err.println("Couldn't load tutorial image");
             }
         }
     }
