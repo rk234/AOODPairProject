@@ -11,7 +11,6 @@ public class LandObjective extends Objective {
         if (r.isLanded() && Math.abs(Vector2.distance(p.getPosition(), r.getPosition())-p.getRadius()) < 25) {
             return true;
         } else {
-            System.out.println(Math.abs(Vector2.distance(p.getPosition(), r.getPosition())-p.getRadius()));
             return false;
         }
     }

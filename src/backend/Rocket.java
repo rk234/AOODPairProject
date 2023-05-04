@@ -49,7 +49,6 @@ public class Rocket extends Entity {
     }
     
     public void update(float dt, Entity[] entities) {
-        //System.out.println(getVelocity().magnitude());
         Vector2 force = calcNetForce(entities, getPosition());
 
         if(InputHandler.main.isKeyPressed(KeyEvent.VK_RIGHT) && !landed) {
@@ -101,7 +100,6 @@ public class Rocket extends Entity {
     public void onCollision(Entity collidingWith, Objective objective) {
         if(getVelocity().magnitude() > MAX_LANDING_VEL) {
             objective.setFailed(true, "You Crashed!");
-            System.out.println("velocity too big");
         } else {
             if(getPosition().subtract(collidingWith.getPosition()).normalize().dot(direction()) > MAX_LANDING_THRESHOLD) {
                 landed = true;

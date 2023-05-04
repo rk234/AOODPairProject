@@ -122,7 +122,6 @@ public class GameView extends JPanel {
                 }
 
                 if(level.getObjective().isFailed()) {
-                    System.out.println("Obj Failed");
                     showLevelFailPanel();
                     loopTimer.stop();
                 } else {
@@ -228,7 +227,6 @@ public class GameView extends JPanel {
     }
 
     public void showLevelFailPanel() {
-        System.out.println("showing fail");
         panel = new EndPanel(level,true);
         panel.setBounds(getWidth()/4, getHeight()/8, getWidth()/2, getHeight()/6);
         add(panel);
@@ -236,7 +234,6 @@ public class GameView extends JPanel {
         Main.windowRepaint();
     }
     public void showLevelCompletePanel() {
-        System.out.println("showing win");
         panel = new EndPanel(level,false);
         panel.setBounds(getWidth()/4, getHeight()/8, getWidth()/2, getHeight()/6);
         add(panel);
