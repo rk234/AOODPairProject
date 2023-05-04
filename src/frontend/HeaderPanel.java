@@ -112,4 +112,12 @@ public class HeaderPanel extends JPanel{
     public void setAltitudeText(String text) {
         altitudeLbl.setText(text);
     }
+
+    public void updateObjective(boolean complete) {
+        if(complete) {
+            objectiveLbl.setForeground(new Color(0, 153, 41));
+        } else {
+            objectiveLbl.setForeground(Color.BLACK);
+        }
+    }
 }

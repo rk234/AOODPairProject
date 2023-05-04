@@ -16,7 +16,9 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.Timer;
 
+import backend.AltitudeObjective;
 import backend.Entity;
+import backend.LandObjective;
 import backend.Level;
 import backend.LevelManager;
 import backend.Main;
@@ -81,13 +83,14 @@ public class GameView extends JPanel {
     public void startLevel() {
         cam.setZoom(level.getDefaultZoom());
         Timer loopTimer = new Timer(1000/30, null);
+
         loopTimer.addActionListener(new ActionListener() {
             private long lastTime = System.currentTimeMillis();
+            private float elapsedSinceComplete = 0;
             @Override
             public void actionPerformed(ActionEvent event) {
                 repaint();                
                 //header.setFps(FPS);
-                header.setVelocity(level.getRocket().getVelocity().magnitude());
                 Planet currentPlanet = null;
                 //header.altitude(level.getRocket().altitude(null));
                 long dt = System.currentTimeMillis()-lastTime;
@@ -106,11 +109,6 @@ public class GameView extends JPanel {
                     }
                 }
 
-                if (currentPlanet == null) {
-                    header.setAltitudeText("Altitude: N/A");
-                } else {
-                    header.setAltitude(level.getRocket().altitude(currentPlanet));
-                }
                 for(int i = 0; i < timeScale; i++) {
                     level.getRocket().update(dt/1000f, level.getEntities());
                     level.getRocket().calculatePhysics(PHYSICS_STEP);
@@ -130,19 +128,35 @@ public class GameView extends JPanel {
                 } else {
                     if(planetsVisited.size() == level.getEntities().length) {
                         if(level.getObjective().checkCompleted(level.getRocket())) {
-                            try {
-                                LevelManager.setComplete(level.getID(), true);
-                            } catch (Exception ex) {
-                            
-                            }
-                            showLevelCompletePanel();
-                            loopTimer.stop();
+                            elapsedSinceComplete+=(dt/1000f);
+                            if(level.getObjective() instanceof AltitudeObjective) elapsedSinceComplete=2;
+                            header.updateObjective(true);
+                        } else {
+                            elapsedSinceComplete = 0;
+                            header.updateObjective(false);
                         }
                     }
                 }
 
+                if(elapsedSinceComplete >= 2) {
+                    try {
+                        LevelManager.setComplete(level.getID(), true);
+                    } catch (Exception ex) {
+                    
+                    }
+                    showLevelCompletePanel();
+                    loopTimer.stop();
+                }
+
                 cam.setPosition(level.getRocket().getPosition());
                 lastTime = System.currentTimeMillis();
+
+                header.setVelocity(level.getRocket().getVelocity().magnitude());
+                if (currentPlanet == null) {
+                    header.setAltitudeText("Altitude: N/A");
+                } else {
+                    header.setAltitude(level.getRocket().altitude(currentPlanet));
+                }
             }
         });
         loopTimer.start();
