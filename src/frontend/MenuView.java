@@ -21,6 +21,7 @@ import backend.Main;
 public class MenuView extends JPanel implements ActionListener {
     private Particle[] particles = new Particle[150];
     private float elapsedTime = 0;
+    private float dt = 0;
 
     public MenuView() {
         setPreferredSize(new Dimension(800, 800));
@@ -63,20 +64,24 @@ public class MenuView extends JPanel implements ActionListener {
         Timer loopTimer = new Timer(1000 / 30, null);
 
         loopTimer.addActionListener(new ActionListener() {
+            private long lastTime = System.currentTimeMillis();
             @Override
             public void actionPerformed(ActionEvent e) {
+                dt = (System.currentTimeMillis()-lastTime)/1000f;
                 /*
                  * generate
                  * render
                  * remove
                  */
                 repaint();
+                lastTime = System.currentTimeMillis();
             }
         });
         loopTimer.start();
     }
 
     public void paintComponent(Graphics g) {
+        long start = System.currentTimeMillis();
         for (int i = 0; i < particles.length; i++) {
             if(particles[i] == null) {
                 if(elapsedTime / 0.01f > 1) {
@@ -86,13 +91,13 @@ public class MenuView extends JPanel implements ActionListener {
             } else if(particles[i].getPosition().getX() > 0 && particles[i].getPosition().getY() > 0 &&
             particles[i].getPosition().getX() < getWidth() && particles[i].getPosition().getY() < getHeight()) {
                 particles[i].draw(g);
-                particles[i].step(1/30f);
+                particles[i].step(dt);
             } else {
                 particles[i] = createParticle();
             }
         }
 
-        elapsedTime+=1/30f;
+        elapsedTime+=dt;
     }
 
     private Particle createParticle() {
