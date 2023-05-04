@@ -1,0 +1,11 @@
+True
+3
+Planet Earth planet0 0 0 1000000 500
+Planet Purple planet9 0 -20000 500000 450
+Planet Blue planet7 0 20000 300000 450
+
+OrbitObjective 2 300 
+
+Rocket 0 520 175
+
+0.014
