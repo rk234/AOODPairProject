@@ -58,7 +58,7 @@ public class LevelSelectView extends JPanel implements ActionListener{
         backButton = new JButton("Back");
         backButton.setEnabled(false);
         backButton.addActionListener(this);
-        forwardButton = new JButton("Forward");
+        forwardButton = new JButton("Next");
         forwardButton.addActionListener(this);
         navigation.add(backButton);
         navigation.add(forwardButton);
@@ -101,7 +101,7 @@ public class LevelSelectView extends JPanel implements ActionListener{
         String text = btn.getText();
         if (text.equals("Return to Menu")) {
             Main.changeView("MenuView");
-        } else if(text.equals("Forward")) {
+        } else if(text.equals("Next")) {
             if(pageIndex+levelsPerPage < levels.length) {
                 pageIndex+=levelsPerPage;
                 updatePage();

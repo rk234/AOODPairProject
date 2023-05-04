@@ -6,7 +6,7 @@ import javax.swing.JPanel;
 import backend.Main;
 
 import java.io.File;
-
+import java.util.Arrays;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -31,7 +31,7 @@ public class TutorialView extends JPanel implements ActionListener {
         imagePanel.setAlignmentX(CENTER_ALIGNMENT);
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
-        menuButton = new JButton("Menu");
+        menuButton = new JButton("Return to Menu");
         menuButton.addActionListener(this);
         leftButton = new JButton("Back");
         leftButton.addActionListener(this);
@@ -47,7 +47,7 @@ public class TutorialView extends JPanel implements ActionListener {
         add(buttonPanel);
     }
     public void loadImages() {
-        images = new BufferedImage[new File("assets/tutorial").listFiles().length];
+        images = new BufferedImage[6];
         for (int i = 0; i < images.length; i++) {
             try {
                 images[i] = ImageIO.read(new File("assets/tutorial/slide"+i+".png"));
@@ -85,7 +85,7 @@ public class TutorialView extends JPanel implements ActionListener {
             if (currentSlide < images.length-1) {
                 currentSlide++;
             }
-        } else if (text.equals("Menu")) {
+        } else if (text.equals("Return to Menu")) {
             Main.changeView("MenuView");
         }
 
