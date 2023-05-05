@@ -58,7 +58,7 @@ public class GameView extends JPanel {
         setBackground(new Color(0,0,0,0));
         setOpaque(false);
 
-        header = new HeaderPanel(level.getObjective(), new ActionListener() {
+        header = new HeaderPanel(level.getObjective(), level, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 JRadioButton button = (JRadioButton)(e.getSource());
                 int ind = 0;

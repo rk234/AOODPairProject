@@ -9,3 +9,5 @@ OrbitObjective 2 300
 Rocket 0 520 175
 
 0.014
+Make use of the gravitational force of the Purple planet to swing your rocket
+around in the direction of the Blue planet.

@@ -2,6 +2,7 @@ package frontend;
 
 import backend.AltitudeObjective;
 import backend.LandObjective;
+import backend.Level;
 import backend.Main;
 import backend.Objective;
 import backend.OrbitObjective;
@@ -13,7 +14,10 @@ import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -21,6 +25,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.BoxLayout;
 
 public class HeaderPanel extends JPanel{
     private JLabel fpsLbl;
@@ -32,7 +37,7 @@ public class HeaderPanel extends JPanel{
     private JPanel row2;
     private Objective obj;
 
-    public HeaderPanel(Objective objective, ActionListener fastForwardListener) {
+    public HeaderPanel(Objective objective, Level level, ActionListener fastForwardListener) {
         this.obj = objective;
         setLayout(new GridLayout(0, 1, 0, 8));
         setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
@@ -80,6 +85,27 @@ public class HeaderPanel extends JPanel{
         }
 
         row2.add(Box.createHorizontalGlue());
+        JButton hintBtn = new JButton("Hint");
+        hintBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JFrame frame = new JFrame();
+                JPanel content = new JPanel();
+                content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
+                content.setPreferredSize(new Dimension(550, 200));
+                content.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+
+                JTextArea text = new JTextArea(level.getHint());
+                text.setEditable(false);
+
+                JScrollPane scroll = new JScrollPane(text);
+                //scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+                content.add(scroll);
+                frame.setContentPane(content);
+                frame.pack();
+                frame.setVisible(true );
+            }
+        });
+
         JButton endLevel = new JButton("Level Select");
         endLevel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -87,6 +113,7 @@ public class HeaderPanel extends JPanel{
             }
         });
 
+        row2.add(hintBtn);
         row2.add(endLevel);
 
         add(row1);

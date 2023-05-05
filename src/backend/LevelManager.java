@@ -57,7 +57,12 @@ public class LevelManager {
             }
             float zoom = sc.nextFloat();
 
-            return new Level(rocket, entities, objective, completed, level, zoom);
+            String hint = "";
+            sc.nextLine();
+            while(sc.hasNextLine()) {
+                hint+=sc.nextLine()+"\n";
+            }
+            return new Level(rocket, entities, objective, completed, level, zoom, hint);
         } catch(IOException ex) {
             return null;
         }

@@ -10,3 +10,5 @@ OrbitObjective 3 200
 Rocket 0 520 175
 
 0.014
+This level requires two consecutive gravity assists in a similar procedure
+to the past two levels.

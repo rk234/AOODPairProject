@@ -9,3 +9,6 @@ OrbitObjective 2 500
 Rocket 0 520 175
 
 0.014
+As with the other levels, you should first get into orbit around Earth.
+Then, you must make use of the Purple planet's gravitational influence
+to swing you in the direction of Mars by passing by its sphere of influence.

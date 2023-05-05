@@ -7,3 +7,4 @@ AltitudeObjective 0 500
 Rocket 0 520 5
 
 3
+Accelerate the rocket upwards to increase your altitude.

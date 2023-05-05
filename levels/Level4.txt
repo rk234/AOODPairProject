@@ -8,3 +8,8 @@ LandObjective 1
 Rocket 0 520 25
 
 3
+Like the last level, first get into orbit around the moon. Then,
+rotate the rocket to point in the opposite direction of its motion
+and accelerate until the rocket is forecasted to impact the surface
+of the moon. As you approach the surface, make sure to reduce your
+speed to a safe magnitude before landing.

@@ -7,13 +7,15 @@ public class Level {
     private Objective objective;
     private boolean complete;
     private float defaultZoom;
+    private String hint;
 
-    public Level(Rocket rocket, Entity[] entities, Objective objective, boolean complete, int id, float zoom) {
+    public Level(Rocket rocket, Entity[] entities, Objective objective, boolean complete, int id, float zoom, String hint) {
         this.rocket = rocket;
         this.entities = entities;
         this.objective = objective;
         this.complete = complete;
         this.id = id;
+        this.hint = hint;
         defaultZoom = zoom;
 
         for(Entity e : entities) {
@@ -71,5 +73,8 @@ public class Level {
     }
     public float getDefaultZoom() {
         return defaultZoom;
+    }
+    public String getHint() {
+        return hint;
     }
 }
