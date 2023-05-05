@@ -18,7 +18,6 @@ import javax.swing.Timer;
 
 import backend.AltitudeObjective;
 import backend.Entity;
-import backend.LandObjective;
 import backend.Level;
 import backend.LevelManager;
 import backend.Main;
@@ -30,8 +29,6 @@ import utils.InputHandler;
 import utils.Vector2;
 
 public class GameView extends JPanel {
-    //TODO: maybe implement a fastforward boolean for gameview
-    //TODO: manage rocket visibility when very zoomed out
     private Level level;
     private Camera cam;
     private float PHYSICS_STEP = 1/15f;
@@ -105,6 +102,7 @@ public class GameView extends JPanel {
                         if(((Planet) e).inInfluence(level.getRocket().getPosition())) {
                             currentPlanet = (Planet) e;
                             planetsVisited.add(currentPlanet.getName());
+                            currentPlanet.setVisited(true);
                         }
                     }
                 }
@@ -196,7 +194,6 @@ public class GameView extends JPanel {
             r.drawTriangle(level.getRocket().getPosition(), new Vector2((1/zoom)*30), level.getRocket().getRotation(), Color.RED);
         }
 
-        //r.drawLine(level.getRocket().getPosition(), level.getRocket().getPosition().add(level.getRocket().direction().scale(100)), Color.green);
         drawUI(g2d);
         
         g.drawImage(framebuffer, 0, 0,getWidth(), getHeight(), null);
@@ -205,11 +202,6 @@ public class GameView extends JPanel {
     public void drawUI(Graphics2D g) {
         g.setTransform(new AffineTransform());
         g.setColor(Color.WHITE);
-        /*
-        g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 30));
-        g.drawString("FPS: " + FPS, 8, 40);
-        g.drawString("Velocity: " + level.getRocket().getVelocity().magnitude(), 8, 80);
-        */
         drawFuelBar(g);
     }
 
@@ -257,13 +249,5 @@ public class GameView extends JPanel {
     public BufferedImage createFramebuffer(int width, int height) {
         return new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     }
-    
-    // public static void main(String[] args) {
-    //     JFrame temp = new JFrame();
-    //     JPanel panel = new JPanel();
-    //     panel.add(new FailPanel(null));
-    //     temp.add(panel);
-    //     temp.setVisible(true);
-    //     temp.pack();
-    // }
+
 }

@@ -67,8 +67,12 @@ public class Rocket extends Entity {
         }
 
         if(fuelRemaining <= 0) {
-            if(altitude(currentPlanet(entities)) > 200)
+            if(getLevel().getObjective() instanceof LandObjective) {
+                if(altitude(((LandObjective)getLevel().getObjective()).getPlanet()) > 200)
+                    getLevel().getObjective().setFailed(true, "You Ran Out of Fuel!");
+            } else {
                 getLevel().getObjective().setFailed(true, "You Ran Out of Fuel!");
+            }
         }
 
         if(InputHandler.main.isKeyPressed(KeyEvent.VK_SPACE) && fuelRemaining > 0) {
@@ -82,17 +86,6 @@ public class Rocket extends Entity {
         setNetForce(force);
     }
 
-
-    private Planet currentPlanet(Entity[] entities) {
-        for(Entity e : entities) {
-            if(e instanceof Planet) {
-                Planet p = (Planet) e;
-                if(p.inInfluence(getPosition())) return p;
-            }
-        }
-
-        return null;
-    }
     public void addForce(Vector2 force) {
         setAcceleration(getAcceleration().add(force.scale(1/getMass())));
     }

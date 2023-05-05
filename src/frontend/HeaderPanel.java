@@ -25,7 +25,6 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.BoxLayout;
 
 public class HeaderPanel extends JPanel{
     private JLabel fpsLbl;
@@ -102,7 +101,9 @@ public class HeaderPanel extends JPanel{
                 content.add(scroll);
                 frame.setContentPane(content);
                 frame.pack();
+                frame.setAlwaysOnTop(true);
                 frame.setVisible(true );
+                Main.requestFocus();
             }
         });
 

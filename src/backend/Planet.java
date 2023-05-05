@@ -11,6 +11,7 @@ public class Planet extends Entity {
     private float radius;
     private BufferedImage image;
     private String name = "";
+    private boolean visited = false;
     public Planet(Vector2 position, float mass, float radius, BufferedImage image) {
         super(position, new Vector2(), new Vector2(), mass, 0, new CircleBounds(position, radius));
         this.radius = radius;
@@ -19,7 +20,10 @@ public class Planet extends Entity {
 
     public void draw(Renderer renderer) {
         renderer.drawImage(getPosition(), new Vector2(radius*2, radius*2).scale(1.25f), getRotation(), image);
-        renderer.drawOval(getPosition(), new Vector2(calculateInfluenceRadius()*2, calculateInfluenceRadius()*2), Color.CYAN, new BasicStroke());
+        if(visited)
+            renderer.drawOval(getPosition(), new Vector2(calculateInfluenceRadius()*2, calculateInfluenceRadius()*2), Color.GREEN, new BasicStroke());
+        else
+            renderer.drawOval(getPosition(), new Vector2(calculateInfluenceRadius()*2, calculateInfluenceRadius()*2), Color.CYAN, new BasicStroke());
     }
 
     public boolean inInfluence(Vector2 pos) {
@@ -47,5 +51,13 @@ public class Planet extends Entity {
 
     public String getName() {
         return name;
+    }
+
+    public boolean visited() {
+        return visited;
+    }
+
+    public void setVisited(boolean visited) {
+        this.visited = visited;
     }
 }
