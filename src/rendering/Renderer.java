@@ -32,10 +32,15 @@ public class Renderer {
         g2d.drawImage(img, (int) (pos.getX() - (imgSize.getX() / 2)), (int) (-pos.getY() - (imgSize.getY() / 2)), (int) imgSize.getX(), (int) imgSize.getY(), null);
     }
 
-    public void drawOval(Vector2 pos, Vector2 size, Color c, Stroke stroke) {
+    public void drawOval(Vector2 pos, Vector2 size, Color c, boolean dotted) {
         g2d.setTransform(createTransform());
         g2d.setColor(c);
-        g2d.setStroke(stroke);
+        if (dotted) {
+            //g2d.setStroke(new BasicStroke(5/cam.getZoom(), BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL,0, new float[]{20/cam.getZoom(), 50/cam.getZoom()}, 0.0f));
+            g2d.setStroke(new BasicStroke(5/cam.getZoom(), BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL,0, new float[]{20, 50}, 0.0f));
+        } else {
+            g2d.setStroke(new BasicStroke(4/cam.getZoom(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+        }
         g2d.drawOval((int) (pos.getX() - (size.getX() / 2)), (int) (-pos.getY() - (size.getY() / 2)), (int) size.getX(), (int) size.getY());
         g2d.setStroke(new BasicStroke());
     }
@@ -58,6 +63,7 @@ public class Renderer {
             return;
         g2d.setTransform(createTransform());
         g2d.setColor(c);
+        g2d.setStroke(new BasicStroke(5/cam.getZoom(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         g2d.drawLine((int)p1.getX(), (int)-p1.getY(), (int)p2.getX(), (int)-p2.getY());
     }
 

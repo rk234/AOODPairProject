@@ -1,6 +1,5 @@
 package backend;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
@@ -21,9 +20,9 @@ public class Planet extends Entity {
     public void draw(Renderer renderer) {
         renderer.drawImage(getPosition(), new Vector2(radius*2, radius*2).scale(1.25f), getRotation(), image);
         if(visited)
-            renderer.drawOval(getPosition(), new Vector2(calculateInfluenceRadius()*2, calculateInfluenceRadius()*2), Color.GREEN, new BasicStroke());
+            renderer.drawOval(getPosition(), new Vector2(calculateInfluenceRadius()*2, calculateInfluenceRadius()*2), Color.GREEN,false);
         else
-            renderer.drawOval(getPosition(), new Vector2(calculateInfluenceRadius()*2, calculateInfluenceRadius()*2), Color.CYAN, new BasicStroke());
+            renderer.drawOval(getPosition(), new Vector2(calculateInfluenceRadius()*2, calculateInfluenceRadius()*2), Color.CYAN,false);
     }
 
     public boolean inInfluence(Vector2 pos) {

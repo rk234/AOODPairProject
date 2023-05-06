@@ -1,6 +1,5 @@
 package frontend;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -161,6 +160,7 @@ public class GameView extends JPanel {
 
 
     public void paintComponent(Graphics g) {
+        super.paintComponent(g);
         header.setBounds(0, 0, getWidth(), 60);
         if(prevWidth != getWidth() || prevHeight != getHeight())
             framebuffer = createFramebuffer(getWidth()*2, getHeight()*2);
@@ -180,8 +180,7 @@ public class GameView extends JPanel {
         drawForecast(r);
         if(level.getObjective() instanceof OrbitObjective) {
             OrbitObjective obj = (OrbitObjective) level.getObjective();
-            r.drawOval(obj.getTargetPlanet().getPosition(), new Vector2((obj.getMinimumAltitude()+obj.getTargetPlanet().getRadius())*2), Color.GREEN, new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
-            0, new float[]{10}, 0));
+            r.drawOval(obj.getTargetPlanet().getPosition(), new Vector2((obj.getMinimumAltitude()+obj.getTargetPlanet().getRadius())*2), Color.GREEN, true);
         }
 
         for(Entity e : level.getEntities()) {
