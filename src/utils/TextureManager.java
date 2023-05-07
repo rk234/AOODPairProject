@@ -21,9 +21,9 @@ public class TextureManager {
 
     public void loadSprites() throws IOException {
         for(int i = 0; i < 10; i++) {
-            loadTextureFromDisk("assets/Planets/planet0"+i+".png", "planet"+i);
+            loadTextureFromDisk("assets" + File.separator + "Planets" + File.separator + "planet0"+i+".png", "planet"+i);
         }
-        loadTextureFromDisk("assets/space/PNG/Sprites/Rockets/spaceRockets_001.png", "rocket");
+        loadTextureFromDisk("assets" + File.separator + "space" + File.separator + "PNG" + File.separator + "Sprites" + File.separator + "Rockets" + File.separator + "spaceRockets_001.png", "rocket");
     }
 
     public void loadTextureFromDisk(String path, String textureName) throws IOException {

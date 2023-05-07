@@ -13,7 +13,7 @@ import java.nio.file.Paths;
 public class LevelManager {
     public static Level getLevel(int level) {
         try {
-            Scanner sc = new Scanner(new File("levels/Level"+level+".txt"));
+            Scanner sc = new Scanner(new File("levels" + File.separator + "Level"+level+".txt"));
             boolean completed = sc.next().equals("True");
             
             int numEntities = sc.nextInt();
@@ -69,9 +69,9 @@ public class LevelManager {
     }
 
     public static void setComplete(int level, boolean complete) throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get("levels/Level"+level+".txt"));
+        List<String> lines = Files.readAllLines(Paths.get("levels" + File.separator + "Level"+level+".txt"));
         lines.set(0, complete ? "True" : "False");
-        Files.write(Paths.get("levels/Level"+level+".txt"), lines);
+        Files.write(Paths.get("levels" + File.separator + "Level"+level+".txt"), lines);
     }
     
     public static void resetLevels() throws IOException {
@@ -81,7 +81,7 @@ public class LevelManager {
     }
 
     public static int numLevels() {
-        return new File("levels/").listFiles().length;
+        return new File("levels"+File.separator).listFiles().length;
     }
 
     public static Level[] getAllLevels() {
