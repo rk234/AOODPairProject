@@ -1,4 +1,5 @@
 package backend;
+
 import javax.swing.JFrame;
 
 import frontend.GameView;
@@ -13,7 +14,6 @@ public class Main {
     public static void main(String[] args) {   
         window = new JFrame();
 
-        //window.setContentPane(new GameView(LevelManager.getLevel(0)));
         changeView("MenuView");
         
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -24,8 +24,6 @@ public class Main {
     public static void windowRepaint() {
         window.repaint();
         window.revalidate();
-        //window.setSize(window.getWidth(), window.getHeight() + 1);
-        //window.setSize(window.getWidth(), window.getHeight() - 1);
     }
     public static void requestFocus() {
         window.requestFocus();
