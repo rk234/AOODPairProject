@@ -59,12 +59,12 @@ public class Renderer {
     }
 
     public void drawLine(Vector2 p1, Vector2 p2, Color c) {
-        if(p1 == null || p2 == null)
-            return;
-        g2d.setTransform(createTransform());
-        g2d.setColor(c);
-        g2d.setStroke(new BasicStroke(5/cam.getZoom(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-        g2d.drawLine((int)p1.getX(), (int)-p1.getY(), (int)p2.getX(), (int)-p2.getY());
+        if(!(p1 == null || p2 == null)) {
+            g2d.setTransform(createTransform());
+            g2d.setColor(c);
+            g2d.setStroke(new BasicStroke(5/cam.getZoom(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+            g2d.drawLine((int)p1.getX(), (int)-p1.getY(), (int)p2.getX(), (int)-p2.getY());
+        }
     }
 
     public void drawRect(Vector2 pos, Vector2 size, Color color) {

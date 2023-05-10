@@ -1,18 +1,18 @@
 True
 2
 Planet Earth planet0 0 0 1000000 500
-Planet Moon planet1 0 -12000 500000 400
+Planet Planet-B planet1 0 -12000 500000 400
 
 OrbitObjective 1 100
 
 Rocket 0 520 10
 
-3
+0.04
 First, get into orbit around Earth like in the last level. Then,
-once you are on the opposite side of the Earth to the Moon, rotate
+once you are on the opposite side of the Earth to Planet-B, rotate
 the rocket to point in the direction of its motion and accelrate until
-your forecasted track enters the Moon's radius of influence (this may
+your forecasted track enters Planet-B's radius of influence (this may
 take multiple attempts until you get it right). Wait until the rocket
-enters the Moon's radius of influence and then rotate the rocket to 
+enters Planet-B's radius of influence and then rotate the rocket to 
 point in the opposite direction of its motion. Hold the space bar until
-you see an orbit form around the moon.
+you see an orbit form around Planet-B.

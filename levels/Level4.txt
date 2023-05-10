@@ -1,15 +1,15 @@
 True
 2
 Planet Earth planet0 0 0 1000000 500
-Planet Moon planet1 0 -12000 500000 400
+Planet Planet-B planet1 0 -12000 500000 400
 
 LandObjective 1
 
 Rocket 0 520 25
 
-3
-Like the last level, first get into orbit around the moon. Then,
+0.04
+Like the last level, first get into orbit around Planet-B. Then,
 rotate the rocket to point in the opposite direction of its motion
 and accelerate until the rocket is forecasted to impact the surface
-of the moon. As you approach the surface, make sure to reduce your
+of Planet-B. As you approach the surface, make sure to reduce your
 speed to a safe magnitude before landing.

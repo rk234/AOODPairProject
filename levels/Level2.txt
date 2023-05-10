@@ -8,9 +8,10 @@ Rocket 0 520 5
 
 3
 To reach orbit, you need to gain both altitude and tangential velocity.
-The best way to do this is by pressing space while rotating the rocket
-to the right. Once the highest point in the rocket's trajectory is above
+The best way to do this is by pressing space while occasionally rotating
+the rocket to the right. You should begin to see a parabolic trajectory
+forming. Once the highest point in the rocket's trajectory is above
 the minimum orbit altitude, stop accelerating and wait until the rocket
 reaches the apex of its trajectory. Then, rotate the rocket so that it is
-pointing tangent to the planet and accelerate until you the minimum altitude
+pointing tangent to the planet and accelerate until you the minimum point
 of your orbit rises above the minimum orbit altitude.
